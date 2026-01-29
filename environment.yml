@@ -1,0 +1,17 @@
+name: ml_env
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - jupyter
+  - pytorch
+  - torchvision
+  - holoviews
+  - bokeh
+  - cpuonly  # Remove this if you have a GPU and want CUDA support, but standard installation often implies cpu for broad compatibility unless specified.

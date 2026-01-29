@@ -1,0 +1,10 @@
+chr - M1 Major_1 0 8230 chr1
+chr - M2 Major_2 0 40870 chr2
+chr - M3 Major_3 0 32750 chr3
+chr - M4 Major_4 0 18150 chr4
+chr - I1 Industry_1 0 15050 chr5
+chr - I2 Industry_2 0 16770 chr6
+chr - I3 Industry_3 0 18000 chr7
+chr - I4 Industry_4 0 18450 chr8
+chr - I5 Industry_5 0 16730 chr9
+chr - I6 Industry_6 0 15000 chr10
