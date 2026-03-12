@@ -67,7 +67,11 @@ YOUR_COLUMN_NAMES = {
 #    If your data has a "Degree Level" column, we'll filter OUT these levels.
 #    Set to [] (empty list) to keep everything.
 
-EXCLUDE_DEGREE_LEVELS = ["Master's", "Doctorate", "Certificate"]
+EXCLUDE_DEGREE_LEVELS = [
+    "Master's", "Doctorate", "Certificate",
+    "Graduate level degree",   # actual label in the UST dataset
+    "Associate's degree",      # keep focus on bachelor's only
+]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. DUPLICATE MAJOR NAMES TO MERGE

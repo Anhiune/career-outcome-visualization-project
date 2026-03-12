@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-12T10:34:23.073869",
-  "rows": 4129,
+  "timestamp": "2026-03-12T10:53:17.832253",
+  "rows": 3230,
   "columns": [
     "Major",
     "Major Cluster",
@@ -14,8 +14,8 @@
     "Industry Group",
     "State"
   ],
-  "unique_majors": 127,
-  "unique_companies": 1752,
+  "unique_majors": 93,
+  "unique_companies": 1326,
   "major_clusters": [
     "ARTS, LANGUAGES & THEOLOGY",
     "BUSINESS & MANAGEMENT",

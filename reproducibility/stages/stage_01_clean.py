@@ -74,6 +74,7 @@ def clean(input_path: Path | None = None) -> pd.DataFrame:
     # ── Detect whether columns are already in standard form ────────────
     standard_names = set(RENAME_MAP.values())   # {"Major", "Job Title", …}
     raw_names      = set(RENAME_MAP.keys())     # {"Program Name/Major", …}
+    grad_date_col  = YOUR_COLUMN_NAMES.get("grad_date")
 
     already_standard = "Major" in df.columns and raw_names != standard_names and not raw_names.issubset(set(df.columns))
 
@@ -92,7 +93,10 @@ def clean(input_path: Path | None = None) -> pd.DataFrame:
             sys.exit(1)
 
         # ── Keep only mapped columns that exist ──────────────────────────
+        # Also keep the grad_date column even though it's not renamed yet
         keep_cols = [c for c in RENAME_MAP.keys() if c in df.columns]
+        if grad_date_col and grad_date_col in df.columns and grad_date_col not in keep_cols:
+            keep_cols.append(grad_date_col)
         df = df[keep_cols].copy()
 
         # ── Rename to standard names ─────────────────────────────────────
@@ -121,19 +125,34 @@ def clean(input_path: Path | None = None) -> pd.DataFrame:
         print(f"[Stage 01] Dropped {before - len(df)} rows (majors with <{min_count} students)")
 
     # ── Extract graduation year from date ────────────────────────────────
-    grad_date_col = YOUR_COLUMN_NAMES.get("grad_date")
+
+    def _extract_year(series: pd.Series) -> pd.Series:
+        """Extract year from a column that might be int, datetime, or string."""
+        if pd.api.types.is_integer_dtype(series):
+            # Already integer years (e.g. 2021, 2022, ...)
+            return series
+        if pd.api.types.is_float_dtype(series):
+            return series.astype(int)
+        # Try parsing as datetime
+        dt = pd.to_datetime(series, errors="coerce")
+        if dt.notna().any():
+            return dt.dt.year
+        return series  # give up, return as-is
+
     if grad_date_col and grad_date_col in RENAME_MAP:
         # We didn't rename it, handle separately
         pass
     # Check if original date column still exists (wasn't renamed)
     if grad_date_col and grad_date_col in df.columns:
-        df["Graduation Year"] = pd.to_datetime(df[grad_date_col], errors="coerce").dt.year
+        df["Graduation Year"] = _extract_year(df[grad_date_col])
         df = df.drop(columns=[grad_date_col], errors="ignore")
     elif "Graduation Date" in df.columns:
-        df["Graduation Year"] = pd.to_datetime(df["Graduation Date"], errors="coerce").dt.year
+        df["Graduation Year"] = _extract_year(df["Graduation Date"])
         df = df.drop(columns=["Graduation Date"], errors="ignore")
     elif "Graduation Year" not in df.columns:
         df["Graduation Year"] = 2024  # default if no date info
+
+    print(f'[Stage 01] Graduation years: {sorted(df["Graduation Year"].unique())}')
 
     # ── Save ─────────────────────────────────────────────────────────────
     INTERMEDIATE_DIR.mkdir(parents=True, exist_ok=True)

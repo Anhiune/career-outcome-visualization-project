@@ -1,107 +1,107 @@
 {
   "summary": {
-    "total_students": 4129,
-    "unique_majors": 127,
-    "unique_companies": 1752,
-    "unique_job_titles": 1811,
+    "total_students": 3230,
+    "unique_majors": 93,
+    "unique_companies": 1326,
+    "unique_job_titles": 1327,
     "year_range": [
-      2024,
+      2021,
       2024
     ]
   },
   "major_counts": {
-    "Financial Management": 373,
+    "Financial Management": 370,
     "Marketing Management": 323,
-    "Mechanical Engineering": 228,
-    "MBA": 181,
+    "Mechanical Engineering": 209,
     "Accounting": 145,
     "Biology": 142,
     "Gen Business Mgmt": 124,
     "Computer Science": 115,
     "Entrepreneurship": 106,
     "Psychology": 99,
-    "Social Work": 95,
     "Actuarial Science": 86,
-    "Data Science": 80,
-    "Electrical Engineering": 72,
     "Neuroscience": 68,
     "Exercise Science": 64,
-    "MS Business Analytics": 63,
     "MS Operations & Supply Chain Mgmt": 61,
     "Leadership & Management": 59,
-    "Health Care MBA": 58
+    "Operations Management": 55,
+    "Civil Engineering": 51,
+    "Electrical Engineering": 51,
+    "Human Resources Management": 51,
+    "Political Science": 50,
+    "Economics - Business": 44
   },
   "cluster_distribution": {
-    "BUSINESS & MANAGEMENT": 2044,
-    "ENGINEERING & TECHNOLOGY": 644,
-    "NATURAL & HEALTH SCIENCES": 497,
-    "EDUCATION & SOCIAL SERVICES": 347,
-    "SOCIAL SCIENCES & HUMANITIES": 319,
+    "BUSINESS & MANAGEMENT": 1643,
+    "NATURAL & HEALTH SCIENCES": 486,
+    "ENGINEERING & TECHNOLOGY": 463,
+    "SOCIAL SCIENCES & HUMANITIES": 314,
     "COMMUNICATION & MEDIA": 160,
-    "ARTS, LANGUAGES & THEOLOGY": 118
+    "ARTS, LANGUAGES & THEOLOGY": 86,
+    "EDUCATION & SOCIAL SERVICES": 78
   },
   "industry_distribution": {
-    "Other": 1392,
-    "Healthcare & Medical": 444,
-    "Financial Services & Insurance": 400,
-    "Manufacturing & Industrial": 325,
-    "Technology & Software": 323,
-    "Professional Services & Consulting": 289,
-    "Education & Academia": 285,
-    "Retail & Consumer Products": 251,
-    "Government & Public Service": 237,
-    "Construction, Engineering & Real Estate": 145,
-    "Energy & Utilities": 38
+    "Other": 1275,
+    "Financial Services & Insurance": 334,
+    "Healthcare & Medical": 257,
+    "Professional Services & Consulting": 246,
+    "Manufacturing & Industrial": 230,
+    "Technology & Software": 223,
+    "Retail & Consumer Products": 218,
+    "Government & Public Service": 152,
+    "Education & Academia": 140,
+    "Construction, Engineering & Real Estate": 126,
+    "Energy & Utilities": 29
   },
   "job_function_distribution": {
-    "Other": 1357,
-    "Finance & Accounting": 465,
-    "Engineering": 322,
-    "Healthcare & Clinical": 291,
-    "Sales & Business Development": 285,
-    "Management & Leadership": 213,
-    "Education & Teaching": 206,
-    "Software & IT": 201,
-    "Marketing & Communications": 160,
-    "Operations & Supply Chain": 155,
-    "Consulting & Advisory": 128,
-    "Government & Public Service": 83,
-    "Human Resources": 68,
-    "Research & Science": 66,
-    "Data & Analytics": 32,
-    "Legal": 28,
-    "Administrative & Support": 23,
-    "Design & Creative": 20,
-    "Nonprofit & Social Services": 11,
-    "Construction & Trades": 11,
+    "Other": 1243,
+    "Finance & Accounting": 412,
+    "Sales & Business Development": 256,
+    "Engineering": 253,
+    "Healthcare & Clinical": 156,
+    "Software & IT": 133,
+    "Marketing & Communications": 132,
+    "Operations & Supply Chain": 122,
+    "Consulting & Advisory": 101,
+    "Education & Teaching": 90,
+    "Management & Leadership": 88,
+    "Government & Public Service": 66,
+    "Human Resources": 54,
+    "Research & Science": 48,
+    "Administrative & Support": 18,
+    "Legal": 16,
+    "Data & Analytics": 12,
+    "Construction & Trades": 10,
+    "Design & Creative": 9,
+    "Nonprofit & Social Services": 7,
     "Real Estate": 4
   },
   "major_industry_matrix": {
     "ARTS, LANGUAGES & THEOLOGY": {
       "Construction, Engineering & Real Estate": 0,
-      "Education & Academia": 25,
+      "Education & Academia": 13,
       "Energy & Utilities": 0,
-      "Financial Services & Insurance": 3,
-      "Government & Public Service": 19,
+      "Financial Services & Insurance": 2,
+      "Government & Public Service": 11,
       "Healthcare & Medical": 4,
       "Manufacturing & Industrial": 3,
-      "Other": 48,
-      "Professional Services & Consulting": 4,
-      "Retail & Consumer Products": 7,
-      "Technology & Software": 5
+      "Other": 40,
+      "Professional Services & Consulting": 3,
+      "Retail & Consumer Products": 6,
+      "Technology & Software": 4
     },
     "BUSINESS & MANAGEMENT": {
-      "Construction, Engineering & Real Estate": 62,
-      "Education & Academia": 43,
-      "Energy & Utilities": 16,
-      "Financial Services & Insurance": 337,
-      "Government & Public Service": 47,
-      "Healthcare & Medical": 175,
-      "Manufacturing & Industrial": 185,
-      "Other": 629,
-      "Professional Services & Consulting": 205,
-      "Retail & Consumer Products": 157,
-      "Technology & Software": 188
+      "Construction, Engineering & Real Estate": 51,
+      "Education & Academia": 32,
+      "Energy & Utilities": 12,
+      "Financial Services & Insurance": 297,
+      "Government & Public Service": 25,
+      "Healthcare & Medical": 86,
+      "Manufacturing & Industrial": 123,
+      "Other": 578,
+      "Professional Services & Consulting": 180,
+      "Retail & Consumer Products": 135,
+      "Technology & Software": 124
     },
     "COMMUNICATION & MEDIA": {
       "Construction, Engineering & Real Estate": 3,
@@ -117,30 +117,30 @@
       "Technology & Software": 10
     },
     "EDUCATION & SOCIAL SERVICES": {
-      "Construction, Engineering & Real Estate": 1,
-      "Education & Academia": 143,
+      "Construction, Engineering & Real Estate": 0,
+      "Education & Academia": 28,
       "Energy & Utilities": 0,
-      "Financial Services & Insurance": 3,
-      "Government & Public Service": 56,
-      "Healthcare & Medical": 64,
+      "Financial Services & Insurance": 0,
+      "Government & Public Service": 10,
+      "Healthcare & Medical": 4,
       "Manufacturing & Industrial": 0,
-      "Other": 67,
-      "Professional Services & Consulting": 6,
-      "Retail & Consumer Products": 4,
-      "Technology & Software": 3
+      "Other": 35,
+      "Professional Services & Consulting": 0,
+      "Retail & Consumer Products": 0,
+      "Technology & Software": 1
     },
     "ENGINEERING & TECHNOLOGY": {
-      "Construction, Engineering & Real Estate": 61,
-      "Education & Academia": 19,
-      "Energy & Utilities": 15,
-      "Financial Services & Insurance": 29,
-      "Government & Public Service": 26,
-      "Healthcare & Medical": 70,
-      "Manufacturing & Industrial": 117,
-      "Other": 174,
-      "Professional Services & Consulting": 26,
-      "Retail & Consumer Products": 16,
-      "Technology & Software": 91
+      "Construction, Engineering & Real Estate": 54,
+      "Education & Academia": 13,
+      "Energy & Utilities": 10,
+      "Financial Services & Insurance": 7,
+      "Government & Public Service": 18,
+      "Healthcare & Medical": 42,
+      "Manufacturing & Industrial": 84,
+      "Other": 152,
+      "Professional Services & Consulting": 15,
+      "Retail & Consumer Products": 10,
+      "Technology & Software": 58
     },
     "NATURAL & HEALTH SCIENCES": {
       "Construction, Engineering & Real Estate": 13,
@@ -148,22 +148,22 @@
       "Energy & Utilities": 7,
       "Financial Services & Insurance": 12,
       "Government & Public Service": 32,
-      "Healthcare & Medical": 100,
+      "Healthcare & Medical": 90,
       "Manufacturing & Industrial": 15,
-      "Other": 242,
+      "Other": 241,
       "Professional Services & Consulting": 19,
       "Retail & Consumer Products": 17,
       "Technology & Software": 16
     },
     "SOCIAL SCIENCES & HUMANITIES": {
       "Construction, Engineering & Real Estate": 5,
-      "Education & Academia": 20,
+      "Education & Academia": 19,
       "Energy & Utilities": 0,
       "Financial Services & Insurance": 9,
-      "Government & Public Service": 47,
+      "Government & Public Service": 46,
       "Healthcare & Medical": 24,
       "Manufacturing & Industrial": 1,
-      "Other": 170,
+      "Other": 167,
       "Professional Services & Consulting": 11,
       "Retail & Consumer Products": 22,
       "Technology & Software": 10
@@ -171,50 +171,50 @@
   },
   "major_jobfn_matrix": {
     "ARTS, LANGUAGES & THEOLOGY": {
-      "Administrative & Support": 6,
+      "Administrative & Support": 4,
       "Construction & Trades": 0,
-      "Consulting & Advisory": 5,
+      "Consulting & Advisory": 3,
       "Data & Analytics": 0,
       "Design & Creative": 1,
-      "Education & Teaching": 13,
+      "Education & Teaching": 5,
       "Engineering": 0,
-      "Finance & Accounting": 2,
-      "Government & Public Service": 6,
+      "Finance & Accounting": 1,
+      "Government & Public Service": 5,
       "Healthcare & Clinical": 4,
       "Human Resources": 1,
       "Legal": 1,
-      "Management & Leadership": 10,
-      "Marketing & Communications": 8,
-      "Nonprofit & Social Services": 2,
-      "Operations & Supply Chain": 4,
-      "Other": 45,
+      "Management & Leadership": 4,
+      "Marketing & Communications": 7,
+      "Nonprofit & Social Services": 0,
+      "Operations & Supply Chain": 3,
+      "Other": 38,
       "Real Estate": 0,
       "Research & Science": 1,
-      "Sales & Business Development": 6,
+      "Sales & Business Development": 5,
       "Software & IT": 3
     },
     "BUSINESS & MANAGEMENT": {
-      "Administrative & Support": 9,
+      "Administrative & Support": 7,
       "Construction & Trades": 6,
-      "Consulting & Advisory": 98,
-      "Data & Analytics": 13,
-      "Design & Creative": 6,
-      "Education & Teaching": 25,
-      "Engineering": 42,
-      "Finance & Accounting": 430,
-      "Government & Public Service": 17,
-      "Healthcare & Clinical": 53,
-      "Human Resources": 56,
-      "Legal": 10,
-      "Management & Leadership": 151,
-      "Marketing & Communications": 103,
-      "Nonprofit & Social Services": 1,
-      "Operations & Supply Chain": 125,
-      "Other": 611,
+      "Consulting & Advisory": 77,
+      "Data & Analytics": 9,
+      "Design & Creative": 1,
+      "Education & Teaching": 20,
+      "Engineering": 21,
+      "Finance & Accounting": 381,
+      "Government & Public Service": 13,
+      "Healthcare & Clinical": 27,
+      "Human Resources": 46,
+      "Legal": 2,
+      "Management & Leadership": 53,
+      "Marketing & Communications": 78,
+      "Nonprofit & Social Services": 0,
+      "Operations & Supply Chain": 100,
+      "Other": 562,
       "Real Estate": 3,
-      "Research & Science": 11,
-      "Sales & Business Development": 213,
-      "Software & IT": 61
+      "Research & Science": 6,
+      "Sales & Business Development": 190,
+      "Software & IT": 41
     },
     "COMMUNICATION & MEDIA": {
       "Administrative & Support": 1,
@@ -242,48 +242,48 @@
     "EDUCATION & SOCIAL SERVICES": {
       "Administrative & Support": 0,
       "Construction & Trades": 1,
-      "Consulting & Advisory": 1,
+      "Consulting & Advisory": 0,
       "Data & Analytics": 0,
-      "Design & Creative": 2,
-      "Education & Teaching": 131,
-      "Engineering": 1,
-      "Finance & Accounting": 1,
-      "Government & Public Service": 12,
-      "Healthcare & Clinical": 108,
-      "Human Resources": 1,
-      "Legal": 2,
-      "Management & Leadership": 15,
-      "Marketing & Communications": 1,
-      "Nonprofit & Social Services": 2,
-      "Operations & Supply Chain": 1,
-      "Other": 61,
+      "Design & Creative": 0,
+      "Education & Teaching": 30,
+      "Engineering": 0,
+      "Finance & Accounting": 0,
+      "Government & Public Service": 2,
+      "Healthcare & Clinical": 11,
+      "Human Resources": 0,
+      "Legal": 0,
+      "Management & Leadership": 0,
+      "Marketing & Communications": 0,
+      "Nonprofit & Social Services": 1,
+      "Operations & Supply Chain": 0,
+      "Other": 32,
       "Real Estate": 0,
-      "Research & Science": 2,
-      "Sales & Business Development": 3,
-      "Software & IT": 2
+      "Research & Science": 0,
+      "Sales & Business Development": 0,
+      "Software & IT": 1
     },
     "ENGINEERING & TECHNOLOGY": {
-      "Administrative & Support": 1,
-      "Construction & Trades": 1,
-      "Consulting & Advisory": 8,
-      "Data & Analytics": 17,
-      "Design & Creative": 6,
-      "Education & Teaching": 5,
-      "Engineering": 237,
-      "Finance & Accounting": 5,
-      "Government & Public Service": 9,
-      "Healthcare & Clinical": 6,
-      "Human Resources": 2,
+      "Administrative & Support": 0,
+      "Construction & Trades": 0,
+      "Consulting & Advisory": 5,
+      "Data & Analytics": 1,
+      "Design & Creative": 2,
+      "Education & Teaching": 3,
+      "Engineering": 191,
+      "Finance & Accounting": 3,
+      "Government & Public Service": 8,
+      "Healthcare & Clinical": 1,
+      "Human Resources": 0,
       "Legal": 0,
-      "Management & Leadership": 12,
-      "Marketing & Communications": 1,
+      "Management & Leadership": 6,
+      "Marketing & Communications": 0,
       "Nonprofit & Social Services": 0,
-      "Operations & Supply Chain": 14,
-      "Other": 171,
+      "Operations & Supply Chain": 8,
+      "Other": 146,
       "Real Estate": 0,
-      "Research & Science": 16,
-      "Sales & Business Development": 6,
-      "Software & IT": 127
+      "Research & Science": 5,
+      "Sales & Business Development": 4,
+      "Software & IT": 80
     },
     "NATURAL & HEALTH SCIENCES": {
       "Administrative & Support": 2,
@@ -292,17 +292,17 @@
       "Data & Analytics": 1,
       "Design & Creative": 4,
       "Education & Teaching": 12,
-      "Engineering": 30,
+      "Engineering": 29,
       "Finance & Accounting": 12,
       "Government & Public Service": 14,
-      "Healthcare & Clinical": 88,
+      "Healthcare & Clinical": 81,
       "Human Resources": 3,
-      "Legal": 4,
+      "Legal": 2,
       "Management & Leadership": 7,
       "Marketing & Communications": 2,
       "Nonprofit & Social Services": 2,
       "Operations & Supply Chain": 5,
-      "Other": 244,
+      "Other": 243,
       "Real Estate": 0,
       "Research & Science": 34,
       "Sales & Business Development": 17,
@@ -317,15 +317,15 @@
       "Education & Teaching": 16,
       "Engineering": 8,
       "Finance & Accounting": 11,
-      "Government & Public Service": 22,
+      "Government & Public Service": 21,
       "Healthcare & Clinical": 30,
-      "Human Resources": 5,
+      "Human Resources": 4,
       "Legal": 8,
       "Management & Leadership": 13,
       "Marketing & Communications": 3,
       "Nonprofit & Social Services": 3,
       "Operations & Supply Chain": 3,
-      "Other": 166,
+      "Other": 163,
       "Real Estate": 1,
       "Research & Science": 1,
       "Sales & Business Development": 20,
@@ -336,170 +336,275 @@
     {
       "Major Cluster": "BUSINESS & MANAGEMENT",
       "Industry Group": "Other",
-      "Count": 629
+      "Count": 578
     },
     {
       "Major Cluster": "BUSINESS & MANAGEMENT",
       "Industry Group": "Financial Services & Insurance",
-      "Count": 337
+      "Count": 297
     },
     {
       "Major Cluster": "NATURAL & HEALTH SCIENCES",
       "Industry Group": "Other",
-      "Count": 242
+      "Count": 241
     },
     {
       "Major Cluster": "BUSINESS & MANAGEMENT",
       "Industry Group": "Professional Services & Consulting",
-      "Count": 205
-    },
-    {
-      "Major Cluster": "BUSINESS & MANAGEMENT",
-      "Industry Group": "Technology & Software",
-      "Count": 188
-    },
-    {
-      "Major Cluster": "BUSINESS & MANAGEMENT",
-      "Industry Group": "Manufacturing & Industrial",
-      "Count": 185
-    },
-    {
-      "Major Cluster": "BUSINESS & MANAGEMENT",
-      "Industry Group": "Healthcare & Medical",
-      "Count": 175
-    },
-    {
-      "Major Cluster": "ENGINEERING & TECHNOLOGY",
-      "Industry Group": "Other",
-      "Count": 174
+      "Count": 180
     },
     {
       "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
       "Industry Group": "Other",
-      "Count": 170
+      "Count": 167
+    },
+    {
+      "Major Cluster": "ENGINEERING & TECHNOLOGY",
+      "Industry Group": "Other",
+      "Count": 152
     },
     {
       "Major Cluster": "BUSINESS & MANAGEMENT",
       "Industry Group": "Retail & Consumer Products",
-      "Count": 157
+      "Count": 135
     },
     {
-      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
-      "Industry Group": "Education & Academia",
-      "Count": 143
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Industry Group": "Technology & Software",
+      "Count": 124
+    },
+    {
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Industry Group": "Manufacturing & Industrial",
+      "Count": 123
+    },
+    {
+      "Major Cluster": "NATURAL & HEALTH SCIENCES",
+      "Industry Group": "Healthcare & Medical",
+      "Count": 90
+    },
+    {
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Industry Group": "Healthcare & Medical",
+      "Count": 86
     },
     {
       "Major Cluster": "ENGINEERING & TECHNOLOGY",
       "Industry Group": "Manufacturing & Industrial",
-      "Count": 117
+      "Count": 84
     },
     {
-      "Major Cluster": "NATURAL & HEALTH SCIENCES",
-      "Industry Group": "Healthcare & Medical",
-      "Count": 100
+      "Major Cluster": "COMMUNICATION & MEDIA",
+      "Industry Group": "Other",
+      "Count": 62
     },
     {
       "Major Cluster": "ENGINEERING & TECHNOLOGY",
       "Industry Group": "Technology & Software",
-      "Count": 91
+      "Count": 58
     },
     {
       "Major Cluster": "ENGINEERING & TECHNOLOGY",
-      "Industry Group": "Healthcare & Medical",
-      "Count": 70
-    },
-    {
-      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
-      "Industry Group": "Other",
-      "Count": 67
-    },
-    {
-      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
-      "Industry Group": "Healthcare & Medical",
-      "Count": 64
+      "Industry Group": "Construction, Engineering & Real Estate",
+      "Count": 54
     },
     {
       "Major Cluster": "BUSINESS & MANAGEMENT",
       "Industry Group": "Construction, Engineering & Real Estate",
-      "Count": 62
+      "Count": 51
     },
     {
-      "Major Cluster": "COMMUNICATION & MEDIA",
-      "Industry Group": "Other",
-      "Count": 62
+      "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
+      "Industry Group": "Government & Public Service",
+      "Count": 46
     },
     {
       "Major Cluster": "ENGINEERING & TECHNOLOGY",
-      "Industry Group": "Construction, Engineering & Real Estate",
-      "Count": 61
+      "Industry Group": "Healthcare & Medical",
+      "Count": 42
+    },
+    {
+      "Major Cluster": "ARTS, LANGUAGES & THEOLOGY",
+      "Industry Group": "Other",
+      "Count": 40
+    },
+    {
+      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
+      "Industry Group": "Other",
+      "Count": 35
     }
   ],
   "top_companies": {
-    "University of St. Thomas": 66,
-    "UnitedHealth Group": 50,
-    "Optum": 43,
-    "Target": 33,
-    "3M": 28,
-    "Medtronic": 26,
-    "Wells Fargo": 24,
-    "Ecolab": 21,
-    "Ameriprise Financial": 20,
-    "Deloitte": 20,
-    "Boston Scientific": 18,
-    "US Bank": 16,
-    "Best Buy": 15,
-    "U.S. Bank": 14,
-    "Hennepin County": 13,
-    "United Health Group": 13,
+    "University of St. Thomas": 47,
+    "UnitedHealth Group": 26,
+    "Target": 23,
+    "Optum": 21,
+    "Deloitte": 19,
+    "3M": 18,
+    "Ecolab": 17,
+    "Wells Fargo": 17,
+    "Medtronic": 16,
+    "Ameriprise Financial": 16,
+    "US Bank": 13,
     "SPS Commerce": 13,
-    "Allina Health": 13,
-    "Mayo Clinic": 12,
-    "EY": 11
+    "U.S. Bank": 12,
+    "Best Buy": 11,
+    "EY": 11,
+    "PwC": 10,
+    "United Health Group": 10,
+    "Polaris": 8,
+    "RSM": 8,
+    "Emergency Care Consultants": 7
   },
   "yearly_trends": [
     {
+      "Graduation Year": 2021,
+      "Major Cluster": "ARTS, LANGUAGES & THEOLOGY",
+      "Count": 33
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Count": 507
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "COMMUNICATION & MEDIA",
+      "Count": 52
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
+      "Count": 28
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "ENGINEERING & TECHNOLOGY",
+      "Count": 158
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "NATURAL & HEALTH SCIENCES",
+      "Count": 167
+    },
+    {
+      "Graduation Year": 2021,
+      "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
+      "Count": 127
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "ARTS, LANGUAGES & THEOLOGY",
+      "Count": 22
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Count": 520
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "COMMUNICATION & MEDIA",
+      "Count": 48
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
+      "Count": 22
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "ENGINEERING & TECHNOLOGY",
+      "Count": 137
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "NATURAL & HEALTH SCIENCES",
+      "Count": 139
+    },
+    {
+      "Graduation Year": 2022,
+      "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
+      "Count": 81
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "ARTS, LANGUAGES & THEOLOGY",
+      "Count": 19
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "BUSINESS & MANAGEMENT",
+      "Count": 436
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "COMMUNICATION & MEDIA",
+      "Count": 42
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "EDUCATION & SOCIAL SERVICES",
+      "Count": 16
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "ENGINEERING & TECHNOLOGY",
+      "Count": 109
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "NATURAL & HEALTH SCIENCES",
+      "Count": 110
+    },
+    {
+      "Graduation Year": 2023,
+      "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
+      "Count": 73
+    },
+    {
       "Graduation Year": 2024,
       "Major Cluster": "ARTS, LANGUAGES & THEOLOGY",
-      "Count": 118
+      "Count": 12
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "BUSINESS & MANAGEMENT",
-      "Count": 2044
+      "Count": 180
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "COMMUNICATION & MEDIA",
-      "Count": 160
+      "Count": 18
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "EDUCATION & SOCIAL SERVICES",
-      "Count": 347
+      "Count": 12
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "ENGINEERING & TECHNOLOGY",
-      "Count": 644
+      "Count": 59
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "NATURAL & HEALTH SCIENCES",
-      "Count": 497
+      "Count": 70
     },
     {
       "Graduation Year": 2024,
       "Major Cluster": "SOCIAL SCIENCES & HUMANITIES",
-      "Count": 319
+      "Count": 33
     }
   ],
   "diversity_scores": {
-    "ENGINEERING & TECHNOLOGY": 0.8459,
-    "BUSINESS & MANAGEMENT": 0.8362,
-    "NATURAL & HEALTH SCIENCES": 0.7099,
-    "SOCIAL SCIENCES & HUMANITIES": 0.6767,
-    "ARTS, LANGUAGES & THEOLOGY": 0.7548,
+    "ENGINEERING & TECHNOLOGY": 0.8173,
+    "BUSINESS & MANAGEMENT": 0.8091,
+    "NATURAL & HEALTH SCIENCES": 0.7067,
+    "SOCIAL SCIENCES & HUMANITIES": 0.6779,
+    "ARTS, LANGUAGES & THEOLOGY": 0.7323,
     "COMMUNICATION & MEDIA": 0.7892,
-    "EDUCATION & SOCIAL SERVICES": 0.7322
+    "EDUCATION & SOCIAL SERVICES": 0.6506
   }
 }
