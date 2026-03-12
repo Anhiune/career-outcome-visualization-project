@@ -1,0 +1,114 @@
+Large Cluster,Small Cluster,Major Name,Student Count,% of Cluster
+BUSINESS & MANAGEMENT,Finance & Accounting,Financial Management,373,61.6%
+BUSINESS & MANAGEMENT,Finance & Accounting,Accounting,145,23.9%
+BUSINESS & MANAGEMENT,Finance & Accounting,Actuarial Science,86,14.2%
+BUSINESS & MANAGEMENT,Finance & Accounting,Risk Management and Insurance,2,0.3%
+BUSINESS & MANAGEMENT,General Business,MBA,181,41.0%
+BUSINESS & MANAGEMENT,General Business,Gen Business Mgmt,124,28.1%
+BUSINESS & MANAGEMENT,General Business,Entrepreneurship,106,24.0%
+BUSINESS & MANAGEMENT,General Business,Executive MBA,30,6.8%
+BUSINESS & MANAGEMENT,General Business,Family Business,1,0.2%
+BUSINESS & MANAGEMENT,Marketing & Communication,Marketing Management,323,90.5%
+BUSINESS & MANAGEMENT,Marketing & Communication,Bus Admin - Communication,31,8.7%
+BUSINESS & MANAGEMENT,Marketing & Communication,Business Communication,3,0.8%
+BUSINESS & MANAGEMENT,Operations & Analytics,MS Business Analytics,63,30.3%
+BUSINESS & MANAGEMENT,Operations & Analytics,MS Operations & Supply Chain Mgmt,61,29.3%
+BUSINESS & MANAGEMENT,Operations & Analytics,Operations Management,55,26.4%
+BUSINESS & MANAGEMENT,Operations & Analytics,Data Analytics,29,13.9%
+BUSINESS & MANAGEMENT,Specialized Business,Human Resources Management,51,35.2%
+BUSINESS & MANAGEMENT,Specialized Business,Real Estate Studies,37,25.5%
+BUSINESS & MANAGEMENT,Specialized Business,Law & Compliance,30,20.7%
+BUSINESS & MANAGEMENT,Specialized Business,International Business,21,14.5%
+BUSINESS & MANAGEMENT,Specialized Business,Org. Ethics & Compliance,6,4.1%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Computer Science (BS),113,40.2%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Data Science,80,28.5%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Software Engineering,39,13.9%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Computer Engineering,36,12.8%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Information Technology,6,2.1%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Software Management,4,1.4%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Comp Science BS (Master Track),1,0.4%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Computer Science,1,0.4%
+ENGINEERING & TECHNOLOGY,Computer Science & IT,Quant Methods - Computer Sci,1,0.4%
+ENGINEERING & TECHNOLOGY,Engineering Disciplines,Mechanical Engineering,228,62.1%
+ENGINEERING & TECHNOLOGY,Engineering Disciplines,Electrical Engineering,72,19.6%
+ENGINEERING & TECHNOLOGY,Engineering Disciplines,Civil Engineering,51,13.9%
+ENGINEERING & TECHNOLOGY,Engineering Disciplines,Manufacturing Engineering,10,2.7%
+ENGINEERING & TECHNOLOGY,Engineering Disciplines,Systems Engineering,6,1.6%
+NATURAL & HEALTH SCIENCES,Biological Sciences,Biology (BS),99,36.9%
+NATURAL & HEALTH SCIENCES,Biological Sciences,Neuroscience,68,25.4%
+NATURAL & HEALTH SCIENCES,Biological Sciences,Biology,43,16.0%
+NATURAL & HEALTH SCIENCES,Biological Sciences,Biochemistry,41,15.3%
+NATURAL & HEALTH SCIENCES,Biological Sciences,Biology of Global Health,17,6.3%
+NATURAL & HEALTH SCIENCES,Physical Sciences,Chemistry,24,61.5%
+NATURAL & HEALTH SCIENCES,Physical Sciences,Geology (BS),7,17.9%
+NATURAL & HEALTH SCIENCES,Physical Sciences,Physics (BS),3,7.7%
+NATURAL & HEALTH SCIENCES,Physical Sciences,Physics,3,7.7%
+NATURAL & HEALTH SCIENCES,Physical Sciences,Geology,2,5.1%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Environmental Studies,12,30.8%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Environmental Sci (Biology),9,23.1%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Environmental Sci (Geoscience),9,23.1%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Geography - Geo Info Sys (GIS),5,12.8%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Environmental Science,2,5.1%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Environmental Sci (Chemistry),1,2.6%
+NATURAL & HEALTH SCIENCES,Environmental Sciences,Geography,1,2.6%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Exercise Science,64,36.6%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Health Care MBA,58,33.1%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Public Health,26,14.9%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Nursing,9,5.1%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Health Promotion & Wellness,9,5.1%
+NATURAL & HEALTH SCIENCES,Health & Wellness,Health Care Innovation,9,5.1%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Psychology,99,34.3%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Political Science,50,17.3%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Economics - Business,44,15.2%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Economics,25,8.7%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Criminal Justice,24,8.3%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Sociology,11,3.8%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Economics - Public Policy,11,3.8%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Justice & Peace Studies,11,3.8%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Economics - Mathematical,9,3.1%
+SOCIAL SCIENCES & HUMANITIES,Social Sciences,Economics - International,5,1.7%
+SOCIAL SCIENCES & HUMANITIES,Humanities & Liberal Arts,Liberal Arts,51,44.3%
+SOCIAL SCIENCES & HUMANITIES,Humanities & Liberal Arts,Philosophy,39,33.9%
+SOCIAL SCIENCES & HUMANITIES,Humanities & Liberal Arts,History,18,15.7%
+SOCIAL SCIENCES & HUMANITIES,Humanities & Liberal Arts,Art History,5,4.3%
+SOCIAL SCIENCES & HUMANITIES,Humanities & Liberal Arts,Classical Civilization,2,1.7%
+SOCIAL SCIENCES & HUMANITIES,International Studies,Intl Studies - Pol Sci,10,58.8%
+SOCIAL SCIENCES & HUMANITIES,International Studies,Intl Studies - Economics,4,23.5%
+SOCIAL SCIENCES & HUMANITIES,International Studies,Intl Studies - History,3,17.6%
+COMMUNICATION & MEDIA,Journalism & Media,Digital Media Arts,25,39.7%
+COMMUNICATION & MEDIA,Journalism & Media,Journalism,17,27.0%
+COMMUNICATION & MEDIA,Journalism & Media,COJO Journalism,12,19.0%
+COMMUNICATION & MEDIA,Journalism & Media,COJO Creative Multimedia,9,14.3%
+COMMUNICATION & MEDIA,Communication Studies,Communication Studies,23,30.3%
+COMMUNICATION & MEDIA,Communication Studies,Strategic Comm: Ad and PR,22,28.9%
+COMMUNICATION & MEDIA,Communication Studies,COJO Strategic Communications,20,26.3%
+COMMUNICATION & MEDIA,Communication Studies,COJO Persuasion/Soc Influence,7,9.2%
+COMMUNICATION & MEDIA,Communication Studies,Communication and Journalism,2,2.6%
+COMMUNICATION & MEDIA,Communication Studies,COJO Interpersonal Comm,1,1.3%
+COMMUNICATION & MEDIA,Communication Studies,Strategic Communication,1,1.3%
+COMMUNICATION & MEDIA,Creative Writing,English - Creative Writing,21,80.8%
+COMMUNICATION & MEDIA,Creative Writing,Creative Writing & Publishing,5,19.2%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Elementary Education (K-6),32,47.1%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Middle/Secondary Education,14,20.6%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Music Education,7,10.3%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Teacher Preparation-Elem K-6,5,7.4%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Teacher Preparation-Secondary,4,5.9%
+EDUCATION & SOCIAL SERVICES,Teacher Education,K-12 Music Education,3,4.4%
+EDUCATION & SOCIAL SERVICES,Teacher Education,Teacher Preparation - K-12,2,2.9%
+EDUCATION & SOCIAL SERVICES,Teacher Education,K-12 World Lang. & Cultures,1,1.5%
+EDUCATION & SOCIAL SERVICES,Educational Leadership,Educ Leadership & Learning,15,46.9%
+EDUCATION & SOCIAL SERVICES,Educational Leadership,Educational Studies,14,43.8%
+EDUCATION & SOCIAL SERVICES,Educational Leadership,Educational Leadership & Admin,3,9.4%
+EDUCATION & SOCIAL SERVICES,Special Education & Counseling,Acad Behavioral Strategist,53,53.0%
+EDUCATION & SOCIAL SERVICES,Special Education & Counseling,Counseling Psychology,40,40.0%
+EDUCATION & SOCIAL SERVICES,Special Education & Counseling,Autism Spectrum Disorders,4,4.0%
+EDUCATION & SOCIAL SERVICES,Special Education & Counseling,Early Childhood Special Educ,3,3.0%
+EDUCATION & SOCIAL SERVICES,Social Work,Social Work,95,74.8%
+EDUCATION & SOCIAL SERVICES,Social Work,Social Work Advanced Standing,32,25.2%
+"ARTS, LANGUAGES & THEOLOGY",Languages,Spanish Cultural/Literary St.,5,38.5%
+"ARTS, LANGUAGES & THEOLOGY",Languages,French,3,23.1%
+"ARTS, LANGUAGES & THEOLOGY",Languages,Spanish Linguistics/Lang. St.,3,23.1%
+"ARTS, LANGUAGES & THEOLOGY",Languages,German,1,7.7%
+"ARTS, LANGUAGES & THEOLOGY",Languages,Spanish,1,7.7%
+"ARTS, LANGUAGES & THEOLOGY",English & Writing,English,18,66.7%
+"ARTS, LANGUAGES & THEOLOGY",English & Writing,English - Professional Writing,9,33.3%

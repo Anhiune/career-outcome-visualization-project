@@ -1,0 +1,221 @@
+{
+  "pathway_matrix": {
+    "EDUCATION": {
+      "BUSINESS": 2.16,
+      "COMM_MEDIA": 5.76,
+      "EDUCATION": 41.59,
+      "HUMANITIES": 8.44,
+      "LEADERSHIP_LAW": 4.72,
+      "OTHER": 17.86,
+      "SOCIAL_SCI": 5.72,
+      "STEM": 2.48
+    },
+    "ENGINEERING_MFG": {
+      "BUSINESS": 2.96,
+      "COMM_MEDIA": 0.72,
+      "EDUCATION": 0.0,
+      "HUMANITIES": 0.89,
+      "LEADERSHIP_LAW": 8.49,
+      "OTHER": 0.0,
+      "SOCIAL_SCI": 2.02,
+      "STEM": 6.87
+    },
+    "FINANCE": {
+      "BUSINESS": 17.75,
+      "COMM_MEDIA": 2.16,
+      "EDUCATION": 0.29,
+      "HUMANITIES": 0.89,
+      "LEADERSHIP_LAW": 3.77,
+      "OTHER": 0.0,
+      "SOCIAL_SCI": 8.42,
+      "STEM": 2.15
+    },
+    "HEALTHCARE": {
+      "BUSINESS": 3.92,
+      "COMM_MEDIA": 2.16,
+      "EDUCATION": 20.35,
+      "HUMANITIES": 0.44,
+      "LEADERSHIP_LAW": 5.66,
+      "OTHER": 5.36,
+      "SOCIAL_SCI": 7.41,
+      "STEM": 9.59
+    },
+    "NON_PROFIT": {
+      "BUSINESS": 0.11,
+      "COMM_MEDIA": 0.0,
+      "EDUCATION": 1.18,
+      "HUMANITIES": 3.11,
+      "LEADERSHIP_LAW": 0.0,
+      "OTHER": 0.0,
+      "SOCIAL_SCI": 0.34,
+      "STEM": 0.25
+    },
+    "PROF_SERVICES": {
+      "BUSINESS": 1.71,
+      "COMM_MEDIA": 0.0,
+      "EDUCATION": 0.29,
+      "HUMANITIES": 3.11,
+      "LEADERSHIP_LAW": 9.43,
+      "OTHER": 3.57,
+      "SOCIAL_SCI": 3.03,
+      "STEM": 1.41
+    },
+    "PUBLIC_SERVICE": {
+      "BUSINESS": 0.97,
+      "COMM_MEDIA": 1.44,
+      "EDUCATION": 7.37,
+      "HUMANITIES": 1.33,
+      "LEADERSHIP_LAW": 2.83,
+      "OTHER": 1.79,
+      "SOCIAL_SCI": 2.36,
+      "STEM": 1.24
+    },
+    "RETAIL_CONSUMER": {
+      "BUSINESS": 7.05,
+      "COMM_MEDIA": 10.79,
+      "EDUCATION": 0.29,
+      "HUMANITIES": 3.11,
+      "LEADERSHIP_LAW": 5.66,
+      "OTHER": 5.36,
+      "SOCIAL_SCI": 2.02,
+      "STEM": 0.83
+    },
+    "TECH": {
+      "BUSINESS": 5.75,
+      "COMM_MEDIA": 6.47,
+      "EDUCATION": 2.06,
+      "HUMANITIES": 4.0,
+      "LEADERSHIP_LAW": 7.55,
+      "OTHER": 5.36,
+      "SOCIAL_SCI": 6.06,
+      "STEM": 17.87
+    },
+    "VARIOUS/UNCATEGORIZED": {
+      "BUSINESS": 57.62,
+      "COMM_MEDIA": 70.5,
+      "EDUCATION": 26.55,
+      "HUMANITIES": 74.67,
+      "LEADERSHIP_LAW": 51.89,
+      "OTHER": 60.71,
+      "SOCIAL_SCI": 62.63,
+      "STEM": 57.32
+    }
+  },
+  "diversity_scores": {
+    "EDUCATION": 0.7090610071266348,
+    "LEADERSHIP_LAW": 0.6981132075471699,
+    "BUSINESS": 0.6249254181437434,
+    "STEM": 0.6240978708760667,
+    "OTHER": 0.5892857142857143,
+    "SOCIAL_SCI": 0.5859719529753199,
+    "COMM_MEDIA": 0.4825837171989028,
+    "HUMANITIES": 0.43049876543209875
+  },
+  "top_pathways": [
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 1013
+    },
+    {
+      "Major Cluster": "STEM",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 693
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "FINANCE",
+      "Student Count": 312
+    },
+    {
+      "Major Cluster": "STEM",
+      "Career Sector": "TECH",
+      "Student Count": 216
+    },
+    {
+      "Major Cluster": "SOCIAL_SCI",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 186
+    },
+    {
+      "Major Cluster": "HUMANITIES",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 168
+    },
+    {
+      "Major Cluster": "EDUCATION",
+      "Career Sector": "EDUCATION",
+      "Student Count": 141
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "RETAIL_CONSUMER",
+      "Student Count": 124
+    },
+    {
+      "Major Cluster": "STEM",
+      "Career Sector": "HEALTHCARE",
+      "Student Count": 116
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "TECH",
+      "Student Count": 101
+    },
+    {
+      "Major Cluster": "COMM_MEDIA",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 98
+    },
+    {
+      "Major Cluster": "EDUCATION",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 90
+    },
+    {
+      "Major Cluster": "STEM",
+      "Career Sector": "ENGINEERING_MFG",
+      "Student Count": 83
+    },
+    {
+      "Major Cluster": "EDUCATION",
+      "Career Sector": "HEALTHCARE",
+      "Student Count": 69
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "HEALTHCARE",
+      "Student Count": 69
+    },
+    {
+      "Major Cluster": "LEADERSHIP_LAW",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 55
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "ENGINEERING_MFG",
+      "Student Count": 52
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "EDUCATION",
+      "Student Count": 38
+    },
+    {
+      "Major Cluster": "OTHER",
+      "Career Sector": "VARIOUS/UNCATEGORIZED",
+      "Student Count": 34
+    },
+    {
+      "Major Cluster": "BUSINESS",
+      "Career Sector": "PROF_SERVICES",
+      "Student Count": 30
+    }
+  ],
+  "summary": {
+    "most_specialized_major": "HUMANITIES",
+    "most_versatile_major": "EDUCATION",
+    "unclassified_career_pct": 56.599660934851045
+  }
+}

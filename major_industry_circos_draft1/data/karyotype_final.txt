@@ -1,0 +1,17 @@
+chr - M1 ARTS, LANGUAGES & THEOLOGY 0 289 chr1
+chr - M2 BUSINESS & MANAGEMENT 0 1758 chr2
+chr - M3 COMMUNICATION & MEDIA 0 165 chr3
+chr - M4 EDUCATION & SOCIAL SERVICES 0 327 chr4
+chr - M5 ENGINEERING & TECHNOLOGY 0 648 chr5
+chr - M6 NATURAL & HEALTH SCIENCES 0 521 chr6
+chr - M7 SOCIAL SCIENCES & HUMANITIES 0 421 chr7
+chr - I1 Consulting & Professional Services 0 96 chr8
+chr - I2 Education & Research 0 289 chr9
+chr - I3 Financial Services 0 337 chr10
+chr - I4 Government & Non-Profit 0 49 chr11
+chr - I5 Healthcare & Life Sciences 0 302 chr12
+chr - I6 Manufacturing & Engineering 0 101 chr13
+chr - I7 Media & Communications 0 36 chr14
+chr - I8 Other/General Business 0 2453 chr15
+chr - I9 Retail & Consumer Goods 0 61 chr16
+chr - I10 Technology & Software 0 405 chr17
