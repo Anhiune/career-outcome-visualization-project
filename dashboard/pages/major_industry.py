@@ -13,11 +13,13 @@ from dashboard.components.charts import (
 
 
 def render(df: pd.DataFrame) -> None:
-    st.header("🔀 Major → Industry Pathways")
+    st.header("🔀 Major Subcluster → Career Cluster Pathways")
 
     st.markdown(
-        "How do graduates from each **Major Cluster** distribute across "
-        "**Industry Groups**? Use the sidebar filters to slice the data."
+        "How do graduates from each **Major Subcluster** (e.g. Economics, "
+        "Engineering Disciplines, Finance & Accounting) distribute across "
+        "**Career Clusters** (Job Functions)? Use the sidebar filters to "
+        "slice the data."
     )
 
     # ── Chord / Circos diagram ────────────────────────────────────────────
@@ -35,5 +37,5 @@ def render(df: pd.DataFrame) -> None:
 
     # ── Raw cross-tab table ──────────────────────────────────────────────
     with st.expander("📋 Cross-tabulation data"):
-        ct = pd.crosstab(df["Major Cluster"], df["Industry Group"], margins=True)
+        ct = pd.crosstab(df["Major Subcluster"], df["Job Function"], margins=True)
         st.dataframe(ct, use_container_width=True)

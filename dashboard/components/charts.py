@@ -8,6 +8,7 @@ inline, which keeps the visualization logic centralized and testable.
 
 from __future__ import annotations
 
+import colorsys
 import math
 import plotly.express as px
 import plotly.graph_objects as go
@@ -64,52 +65,103 @@ def _ribbon_path(
 
 
 def chord_major_industry(df: pd.DataFrame) -> go.Figure:
-    """Circos-style chord diagram: Major Cluster ↔ Industry Group."""
+    """Circos-style chord diagram: Major Subcluster ↔ Career Cluster (Job Function).
 
-    ct = pd.crosstab(df["Major Cluster"], df["Industry Group"])
+    Left side  = v4 major subclusters (Economics, Engineering Disciplines, etc.)
+    Right side = v2 career clusters / job functions (Finance & Accounting, Engineering, etc.)
+    """
+
+    # ── Build crosstab: Major Subcluster × Job Function ──────────────────
+    ct = pd.crosstab(df["Major Subcluster"], df["Job Function"])
+
+    # Drop "Other" from job functions if it exists, to keep the diagram clean
+    if "Other" in ct.columns:
+        ct = ct.drop(columns=["Other"])
+
+    # Remove empty rows/columns
+    ct = ct.loc[ct.sum(axis=1) > 0, ct.sum(axis=0) > 0]
+
     majors = list(ct.index)
-    industries = list(ct.columns)
-    all_labels = majors + industries
+    careers = list(ct.columns)
+    all_labels = majors + careers
     n = len(all_labels)
 
-    # Total flow for each node (determines arc width)
+    # ── Colors ───────────────────────────────────────────────────────────
+    # Major subclusters: derive colors from their parent large cluster
+    _SUBCLUSTER_PARENT = {}
+    for _, row in df[["Major Subcluster", "Major Cluster"]].drop_duplicates().iterrows():
+        _SUBCLUSTER_PARENT[row["Major Subcluster"]] = row["Major Cluster"]
+
+    # Generate varied colors for subclusters based on parent cluster hue
+    _parent_colors_used = {}
+
+    def _subcluster_color(sub: str) -> str:
+        parent = _SUBCLUSTER_PARENT.get(sub, "")
+        base = MAJOR_CLUSTER_COLORS.get(parent, "#888888")
+        h_hex = base.lstrip("#")
+        r, g, b = int(h_hex[0:2], 16) / 255, int(h_hex[2:4], 16) / 255, int(h_hex[4:6], 16) / 255
+        h, s, v = colorsys.rgb_to_hsv(r, g, b)
+        # Offset saturation/value for each subcluster under same parent
+        count = _parent_colors_used.get(parent, 0)
+        _parent_colors_used[parent] = count + 1
+        s2 = max(0.3, min(1.0, s + (count * 0.12 - 0.15)))
+        v2 = max(0.4, min(1.0, v - count * 0.08))
+        r2, g2, b2 = colorsys.hsv_to_rgb(h, s2, v2)
+        return f"#{int(r2*255):02x}{int(g2*255):02x}{int(b2*255):02x}"
+
+    # Career cluster colors (right side) — use a warm/cool palette
+    _CAREER_PALETTE = [
+        "#4e79a7", "#f28e2b", "#e15759", "#76b7b2", "#59a14f",
+        "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ac",
+        "#86bcb6", "#d4a6c8", "#ff6b6b", "#6b8e23", "#cd853f",
+        "#708090", "#b22222", "#2e8b57", "#da70d6", "#4682b4", "#c0c0c0",
+    ]
+    career_colors = {c: _CAREER_PALETTE[i % len(_CAREER_PALETTE)] for i, c in enumerate(careers)}
+
+    # Build full color map
+    color_map = {}
+    for m in majors:
+        color_map[m] = _subcluster_color(m)
+    for c in careers:
+        color_map[c] = career_colors[c]
+
+    # Total flow for each node
     totals = []
     for m in majors:
         totals.append(int(ct.loc[m].sum()))
-    for ind in industries:
-        totals.append(int(ct[ind].sum()))
+    for c in careers:
+        totals.append(int(ct[c].sum()))
 
     grand_total = sum(totals)
-    gap_frac = 0.02          # gap between arcs (fraction of circle)
-    total_gap = gap_frac * n
-    arc_total = 2 * math.pi * (1 - total_gap / (2 * math.pi + total_gap))
-    # Simpler: total angle for arcs = 2π - n*gap_angle
+    gap_frac = 0.015
     gap_angle = 2 * math.pi * gap_frac
     arc_angle_total = 2 * math.pi - n * gap_angle
 
     # Compute start/end angle for each node
-    node_angles = []  # list of (start, end) in radians
+    # Place majors on the right half (top), careers on the left half (bottom)
+    # to get the classic circos layout
+    major_total = sum(totals[:len(majors)])
+    career_total = sum(totals[len(majors):])
+
+    node_angles = []
     cursor = 0.0
-    for t in totals:
+    for i, t in enumerate(totals):
         span = arc_angle_total * (t / grand_total)
         node_angles.append((cursor, cursor + span))
         cursor += span + gap_angle
 
-    # ── Outer arcs (thick coloured bands) ────────────────────────────────
+    # ── Outer arcs ───────────────────────────────────────────────────────
     shapes = []
     annotations = []
-    arc_traces = []     # invisible scatter for hover
+    arc_traces = []
 
     r_inner, r_outer = 0.92, 1.0
-    r_label = 1.10
+    r_label = 1.08
 
     for i, label in enumerate(all_labels):
         t0, t1 = node_angles[i]
-        color = (MAJOR_CLUSTER_COLORS.get(label)
-                 or INDUSTRY_COLORS.get(label)
-                 or "#888888")
+        color = color_map.get(label, "#888888")
 
-        # Draw thick arc as an SVG path (filled wedge between r_inner and r_outer)
         n_pts = 40
         angles = np.linspace(t0, t1, n_pts)
         outer_x = r_outer * np.cos(angles)
@@ -120,7 +172,6 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
         xs = np.concatenate([outer_x, inner_x, [outer_x[0]]])
         ys = np.concatenate([outer_y, inner_y, [outer_y[0]]])
 
-        # Build SVG path for the arc band
         path_d = f"M {xs[0]:.4f} {ys[0]:.4f} "
         path_d += " ".join(f"L {x:.4f} {y:.4f}" for x, y in zip(xs[1:], ys[1:]))
         path_d += " Z"
@@ -136,56 +187,53 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
         lx = r_label * math.cos(mid_angle)
         ly = r_label * math.sin(mid_angle)
         angle_deg = math.degrees(mid_angle)
-        # Flip text on left side so it reads correctly
         text_angle = -angle_deg if -90 < angle_deg < 90 or angle_deg > 270 else 180 - angle_deg
-        # Wrapping long labels
         display_label = label.replace(" & ", " &<br>").replace(" / ", " /<br>")
 
         annotations.append(dict(
             x=lx, y=ly, text=f"<b>{display_label}</b>",
             showarrow=False,
-            font=dict(size=9, color=color),
+            font=dict(size=8, color=color),
             textangle=text_angle if abs(text_angle) < 90 else 0,
             xanchor="center", yanchor="middle",
         ))
 
-        # Invisible trace for hover on the arc
+        # Invisible hover trace
         hover_x, hover_y = _arc_points(t0, t1, (r_inner + r_outer) / 2, 10)
+        is_major = i < len(majors)
+        side = "Major Subcluster" if is_major else "Career Cluster"
         arc_traces.append(go.Scatter(
             x=hover_x, y=hover_y,
             mode="markers", marker=dict(size=6, color=color, opacity=0),
             hoverinfo="text",
-            text=f"<b>{label}</b><br>{totals[i]:,} graduates",
+            text=f"<b>{label}</b><br>{side}<br>{totals[i]:,} graduates",
             showlegend=False,
         ))
 
-    # ── Ribbons (chords) ─────────────────────────────────────────────────
-    # Track how much of each node's arc has been consumed
+    # ── Ribbons ──────────────────────────────────────────────────────────
     consumed = [0.0] * n
 
     for i, major in enumerate(majors):
-        for j, industry in enumerate(industries):
-            val = int(ct.loc[major, industry])
+        for j, career in enumerate(careers):
+            val = int(ct.loc[major, career])
             if val == 0:
                 continue
 
             j_global = len(majors) + j
 
-            # Source arc sub-span
             src_span = node_angles[i][1] - node_angles[i][0]
             src_start = node_angles[i][0] + consumed[i]
             src_frac = val / totals[i] * src_span
             src_end = src_start + src_frac
             consumed[i] += src_frac
 
-            # Target arc sub-span
             tgt_span = node_angles[j_global][1] - node_angles[j_global][0]
             tgt_start = node_angles[j_global][0] + consumed[j_global]
             tgt_frac = val / totals[j_global] * tgt_span
             tgt_end = tgt_start + tgt_frac
             consumed[j_global] += tgt_frac
 
-            color = MAJOR_CLUSTER_COLORS.get(major, "#888")
+            color = color_map.get(major, "#888")
             ribbon_path = _ribbon_path(src_start, src_end, tgt_start, tgt_end, r=r_inner)
 
             shapes.append(dict(
@@ -195,7 +243,6 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
                 layer="below",
             ))
 
-            # Hover point at midpoint of the chord
             mid_src = (src_start + src_end) / 2
             mid_tgt = (tgt_start + tgt_end) / 2
             hx = 0.4 * (math.cos(mid_src) + math.cos(mid_tgt))
@@ -204,7 +251,7 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
                 x=[hx], y=[hy],
                 mode="markers", marker=dict(size=8, color=color, opacity=0),
                 hoverinfo="text",
-                text=f"<b>{major}</b> → <b>{industry}</b><br>{val:,} graduates",
+                text=f"<b>{major}</b> → <b>{career}</b><br>{val:,} graduates",
                 showlegend=False,
             ))
 
@@ -213,14 +260,14 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         shapes=shapes,
         annotations=annotations,
-        title=dict(text="Major Cluster ↔ Industry Group (Chord Diagram)", font_size=16),
-        xaxis=dict(visible=False, range=[-1.4, 1.4]),
-        yaxis=dict(visible=False, range=[-1.4, 1.4], scaleanchor="x"),
+        title=dict(text="Major Subcluster ↔ Career Cluster (Chord Diagram)", font_size=16),
+        xaxis=dict(visible=False, range=[-1.45, 1.45]),
+        yaxis=dict(visible=False, range=[-1.45, 1.45], scaleanchor="x"),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        height=750,
-        width=750,
-        margin=dict(l=60, r=60, t=60, b=60),
+        height=800,
+        width=800,
+        margin=dict(l=80, r=80, t=60, b=60),
         showlegend=False,
     )
     return fig
@@ -318,22 +365,34 @@ def sankey_three_level(df: pd.DataFrame) -> go.Figure:
 # ── Bar Charts ───────────────────────────────────────────────────────────────
 
 def stacked_bar_clusters(df: pd.DataFrame) -> go.Figure:
-    """Stacked bar: Industry Group breakdown per Major Cluster."""
-    ct = pd.crosstab(df["Major Cluster"], df["Industry Group"])
+    """Stacked bar: Career Cluster (Job Function) breakdown per Major Subcluster."""
+    ct = pd.crosstab(df["Major Subcluster"], df["Job Function"])
+    if "Other" in ct.columns:
+        ct = ct.drop(columns=["Other"])
+    ct = ct.loc[ct.sum(axis=1) > 0, ct.sum(axis=0) > 0]
     ct_pct = ct.div(ct.sum(axis=1), axis=0) * 100
+
+    _CAREER_PALETTE = [
+        "#4e79a7", "#f28e2b", "#e15759", "#76b7b2", "#59a14f",
+        "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ac",
+        "#86bcb6", "#d4a6c8", "#ff6b6b", "#6b8e23", "#cd853f",
+        "#708090", "#b22222", "#2e8b57", "#da70d6", "#4682b4", "#c0c0c0",
+    ]
+    career_colors = {c: _CAREER_PALETTE[i % len(_CAREER_PALETTE)] for i, c in enumerate(ct_pct.columns)}
 
     fig = go.Figure()
     for col in ct_pct.columns:
         fig.add_trace(go.Bar(
             name=col, x=ct_pct.index, y=ct_pct[col],
-            marker_color=INDUSTRY_COLORS.get(col, "#888"),
+            marker_color=career_colors.get(col, "#888"),
         ))
     fig.update_layout(
         barmode="stack",
-        title="Industry Destination by Major Cluster (%)",
+        title="Career Cluster Destination by Major Subcluster (%)",
         yaxis_title="Percentage",
-        height=500,
-        legend=dict(orientation="h", yanchor="bottom", y=-0.4),
+        height=600,
+        xaxis_tickangle=-45,
+        legend=dict(orientation="h", yanchor="bottom", y=-0.6),
     )
     return fig
 
@@ -367,8 +426,11 @@ def job_function_bar(df: pd.DataFrame) -> go.Figure:
 # ── Heatmap ──────────────────────────────────────────────────────────────────
 
 def heatmap_major_industry(df: pd.DataFrame) -> go.Figure:
-    """Heatmap of Major Cluster × Industry Group (% of cluster total)."""
-    ct = pd.crosstab(df["Major Cluster"], df["Industry Group"])
+    """Heatmap of Major Subcluster × Job Function / Career Cluster (% of subcluster total)."""
+    ct = pd.crosstab(df["Major Subcluster"], df["Job Function"])
+    if "Other" in ct.columns:
+        ct = ct.drop(columns=["Other"])
+    ct = ct.loc[ct.sum(axis=1) > 0, ct.sum(axis=0) > 0]
     ct_pct = ct.div(ct.sum(axis=1), axis=0) * 100
 
     fig = go.Figure(go.Heatmap(
@@ -378,11 +440,11 @@ def heatmap_major_industry(df: pd.DataFrame) -> go.Figure:
         colorscale="Blues",
         text=np.round(ct_pct.values, 1),
         texttemplate="%{text}%",
-        hovertemplate="Cluster: %{y}<br>Industry: %{x}<br>Share: %{z:.1f}%<extra></extra>",
+        hovertemplate="Subcluster: %{y}<br>Career: %{x}<br>Share: %{z:.1f}%<extra></extra>",
     ))
     fig.update_layout(
-        title="Major Cluster → Industry Group (% of cluster graduates)",
-        height=450,
+        title="Major Subcluster → Career Cluster (% of subcluster graduates)",
+        height=600,
         xaxis_tickangle=-40,
     )
     return fig
