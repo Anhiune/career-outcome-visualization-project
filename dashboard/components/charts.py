@@ -133,21 +133,35 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
         totals.append(int(ct[c].sum()))
 
     grand_total = sum(totals)
-    gap_frac = 0.015
-    gap_angle = 2 * math.pi * gap_frac
-    arc_angle_total = 2 * math.pi - n * gap_angle
+    n_majors = len(majors)
+    n_careers = len(careers)
+    gap_angle = 2 * math.pi * 0.012       # gap between adjacent arcs
+    big_gap   = 2 * math.pi * 0.03        # larger gap separating left/right halves
+    usable    = 2 * math.pi - 2 * big_gap - n * gap_angle
 
-    # Compute start/end angle for each node
-    # Place majors on the right half (top), careers on the left half (bottom)
-    # to get the classic circos layout
-    major_total = sum(totals[:len(majors)])
-    career_total = sum(totals[len(majors):])
+    # ── Place majors on LEFT half (π/2 → 3π/2), careers on RIGHT half ───
+    major_total = sum(totals[:n_majors])
+    career_total = sum(totals[n_majors:])
 
-    node_angles = []
-    cursor = 0.0
-    for i, t in enumerate(totals):
-        span = arc_angle_total * (t / grand_total)
-        node_angles.append((cursor, cursor + span))
+    # Each half gets arc proportional to its share of the total
+    left_arc  = usable * (major_total / grand_total)
+    right_arc = usable * (career_total / grand_total)
+
+    node_angles = [None] * n
+
+    # Left half: start at π/2. going clockwise (increasing angle toward 3π/2)
+    cursor = math.pi / 2 + big_gap / 2
+    for i in range(n_majors):
+        span = left_arc * (totals[i] / major_total) if major_total else 0
+        node_angles[i] = (cursor, cursor + span)
+        cursor += span + gap_angle
+
+    # Right half: start at 3π/2 + big_gap, going clockwise to π/2
+    cursor = math.pi * 3 / 2 + big_gap / 2
+    for j in range(n_careers):
+        idx = n_majors + j
+        span = right_arc * (totals[idx] / career_total) if career_total else 0
+        node_angles[idx] = (cursor, cursor + span)
         cursor += span + gap_angle
 
     # ── Outer arcs ───────────────────────────────────────────────────────
@@ -182,20 +196,23 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
             layer="above",
         ))
 
-        # Label
+        # Label — left-side labels anchor right, right-side labels anchor left
         mid_angle = (t0 + t1) / 2
         lx = r_label * math.cos(mid_angle)
         ly = r_label * math.sin(mid_angle)
-        angle_deg = math.degrees(mid_angle)
-        text_angle = -angle_deg if -90 < angle_deg < 90 or angle_deg > 270 else 180 - angle_deg
+        angle_deg = math.degrees(mid_angle) % 360
+        # Determine if the label is on the left or right side of the circle
+        on_left = 90 <= angle_deg <= 270
+        text_angle = (180 - angle_deg) if on_left else -angle_deg
+        xanch = "right" if on_left else "left"
         display_label = label.replace(" & ", " &<br>").replace(" / ", " /<br>")
 
         annotations.append(dict(
             x=lx, y=ly, text=f"<b>{display_label}</b>",
             showarrow=False,
             font=dict(size=8, color=color),
-            textangle=text_angle if abs(text_angle) < 90 else 0,
-            xanchor="center", yanchor="middle",
+            textangle=text_angle if abs(text_angle) < 80 else 0,
+            xanchor=xanch, yanchor="middle",
         ))
 
         # Invisible hover trace
@@ -256,18 +273,30 @@ def chord_major_industry(df: pd.DataFrame) -> go.Figure:
             ))
 
     # ── Assemble figure ──────────────────────────────────────────────────
+    # Section labels
+    annotations.append(dict(
+        x=-0.02, y=1.32, text="<b>MAJOR SUBCLUSTERS</b>",
+        showarrow=False, font=dict(size=11, color="#333"),
+        xanchor="center", yanchor="bottom",
+    ))
+    annotations.append(dict(
+        x=0.02, y=-1.32, text="<b>CAREER CLUSTERS</b>",
+        showarrow=False, font=dict(size=11, color="#333"),
+        xanchor="center", yanchor="top",
+    ))
+
     fig = go.Figure(data=arc_traces)
     fig.update_layout(
         shapes=shapes,
         annotations=annotations,
         title=dict(text="Major Subcluster ↔ Career Cluster (Chord Diagram)", font_size=16),
-        xaxis=dict(visible=False, range=[-1.45, 1.45]),
-        yaxis=dict(visible=False, range=[-1.45, 1.45], scaleanchor="x"),
+        xaxis=dict(visible=False, range=[-1.6, 1.6]),
+        yaxis=dict(visible=False, range=[-1.6, 1.6], scaleanchor="x"),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        height=800,
-        width=800,
-        margin=dict(l=80, r=80, t=60, b=60),
+        height=850,
+        width=850,
+        margin=dict(l=100, r=100, t=60, b=60),
         showlegend=False,
     )
     return fig
