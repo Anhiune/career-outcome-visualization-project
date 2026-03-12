@@ -11,7 +11,7 @@ import pandas as pd
 from dashboard.config import APP_TITLE, APP_ICON, DATA_SOURCE
 from dashboard.data_loader import load_data
 from dashboard.components.filters import apply_filters
-from dashboard.pages import overview, major_industry, job_functions, career_pathways
+from dashboard.pages import overview, major_industry, job_functions, career_pathways, data_loaded
 
 # ─── Page config ─────────────────────────────────────────────────────────────
 
@@ -46,6 +46,7 @@ PAGES = {
     "🔀 Major → Industry":  major_industry,
     "🏢 Job Functions":      job_functions,
     "🗺️ Career Pathways":   career_pathways,
+    "📂 Data Loaded":        data_loaded,
 }
 
 st.sidebar.title(f"{APP_ICON} {APP_TITLE}")

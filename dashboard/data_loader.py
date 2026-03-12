@@ -28,13 +28,23 @@ def load_data() -> pd.DataFrame:
 
     if DATA_SOURCE == "real":
         if not REAL_DATA_FILE.exists():
-            raise FileNotFoundError(
-                f"Final data not found: {REAL_DATA_FILE}\n"
-                "\n"
-                "  Either:\n"
-                "  1. Run the pipeline first:  python run.py\n"
-                "  2. Or set INPUT_FILE = None in settings.py to use mock data\n"
-            )
+            # Auto-run pipeline (needed for Streamlit Cloud deployment)
+            try:
+                import subprocess, sys
+                print("[data_loader] Final CSV not found — running pipeline automatically …")
+                subprocess.run(
+                    [sys.executable, "-m", "reproducibility.run_pipeline"],
+                    check=True,
+                )
+            except Exception as e:
+                raise FileNotFoundError(
+                    f"Final data not found: {REAL_DATA_FILE}\n"
+                    f"Auto-pipeline failed: {e}\n"
+                    "\n"
+                    "  Either:\n"
+                    "  1. Run the pipeline first:  python run.py\n"
+                    "  2. Or set INPUT_FILE = None in settings.py to use mock data\n"
+                )
         df = pd.read_csv(REAL_DATA_FILE)
     else:
         csv_path = _ensure_mock_data()

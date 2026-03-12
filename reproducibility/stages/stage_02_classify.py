@@ -6,9 +6,20 @@ Adds three new columns to the cleaned data:
   • Industry Group    — which of 10 industry groups the company belongs to
   • Job Function      — which of 21 job categories the title belongs to
 
-When real lookup files exist (set in settings.py), classifications come
-from those pre-classified Excel files. Otherwise falls back to the
-built-in dictionaries and regex rules.
+Data sources (all sheets used):
+  Major_Career_Analysis_v4.xlsx:
+    - Cluster Breakdown  → Major → (Large Cluster, Small Cluster)
+    - All Majors         → major census with counts
+    - Small Clusters     → subcluster → large-cluster mapping
+    - Job Titles by Years → supplementary job title → career cluster mapping
+    - Breakdown by Years, Large Clusters, Career Analysis,
+      Career Cluster by Years, Overview → reference / dashboard data
+
+  Career_Company_Industry_CLASSIFIED_v2.xlsx:
+    - Full Data with Industries   → Company → Industry, (Company,Title) → Job Function
+    - Industry Groups Summary     → reference
+    - Unusual-Unrelated Job Titles → flagged titles
+    - Companies Needing Research  → reference
 
 Run alone:   python -m reproducibility.stages.stage_02_classify
 Run via:     python run.py
@@ -39,7 +50,7 @@ CLASSIFIED_OUTPUT = INTERMEDIATE_DIR / "02_classified.csv"
 # ═════════════════════════════════════════════════════════════════════════════
 
 def _load_cluster_lookup() -> dict:
-    """Load Major → (Cluster, Subcluster) from the real analysis Excel."""
+    """Load Major → (Cluster, Subcluster) from v4 Cluster Breakdown sheet."""
     if CLUSTER_BREAKDOWN_PATH and CLUSTER_BREAKDOWN_PATH.exists():
         try:
             cb = pd.read_excel(CLUSTER_BREAKDOWN_PATH, sheet_name="Cluster Breakdown")
@@ -49,21 +60,107 @@ def _load_cluster_lookup() -> dict:
                 cluster = str(row["Large Cluster"]).strip()
                 subcluster = str(row.get("Small Cluster", "")).strip()
                 lookup[major] = (cluster, subcluster)
-            print(f"[Stage 02] Loaded {len(lookup)} major→cluster mappings from real data")
+            print(f"[Stage 02] Loaded {len(lookup)} major→cluster mappings from v4 Cluster Breakdown")
             return lookup
         except Exception as e:
             print(f"[Stage 02] ⚠️  Could not read cluster file: {e}")
     return None
 
 
+def _load_small_clusters() -> dict:
+    """Load Small Cluster → Large Cluster mapping from v4 Small Clusters sheet."""
+    if CLUSTER_BREAKDOWN_PATH and CLUSTER_BREAKDOWN_PATH.exists():
+        try:
+            sc = pd.read_excel(CLUSTER_BREAKDOWN_PATH, sheet_name="Small Clusters")
+            lookup = {}
+            for _, row in sc.iterrows():
+                small = str(row["Small Cluster"]).strip()
+                large = str(row["Large Cluster"]).strip()
+                if small and small != "nan" and large and large != "nan":
+                    lookup[small] = large
+            print(f"[Stage 02] Loaded {len(lookup)} small→large cluster mappings from v4 Small Clusters")
+            return lookup
+        except Exception as e:
+            print(f"[Stage 02] ⚠️  Could not read Small Clusters: {e}")
+    return {}
+
+
+def _load_all_majors() -> pd.DataFrame | None:
+    """Load the All Majors sheet from v4 for reference/validation."""
+    if CLUSTER_BREAKDOWN_PATH and CLUSTER_BREAKDOWN_PATH.exists():
+        try:
+            am = pd.read_excel(CLUSTER_BREAKDOWN_PATH, sheet_name="All Majors")
+            print(f"[Stage 02] Loaded {len(am)} majors from v4 All Majors")
+            return am
+        except Exception as e:
+            print(f"[Stage 02] ⚠️  Could not read All Majors: {e}")
+    return None
+
+
+# ── Career-cluster → Job-function translation ────────────────────────────────
+# Maps v4's career "Small Cluster" names to our 21 standard job functions.
+_CAREER_CLUSTER_TO_JOB_FUNCTION = {
+    "Accounting & Audit":       "Finance & Accounting",
+    "Clinical Care":            "Healthcare & Clinical",
+    "Software & Data":          "Software & IT",
+    "Engineering":              "Engineering",
+    "Sales & Marketing":        "Sales & Business Development",
+    "Education":                "Education & Teaching",
+    "Finance & Investment":     "Finance & Accounting",
+    "Finance Management & Business Strategy": "Consulting & Advisory",
+    "Management & Operations":  "Operations & Supply Chain",
+    "Leadership (General)":     "Management & Leadership",
+    "Legal & Policy":           "Legal",
+    "Social Service":           "Nonprofit & Social Services",
+    "IT & Infrastructure":      "Software & IT",
+    "Research & Science":       "Research & Science",
+    "Government & Public Policy": "Government & Public Service",
+    "HR & Org Development":     "Human Resources",
+    "Creative & Media":         "Design & Creative",
+    "Customer Service & Support": "Administrative & Support",
+    "Education & Training":     "Education & Teaching",
+    "Operations & Logistics":   "Operations & Supply Chain",
+    "Marketing & Sales":        "Marketing & Communications",
+}
+
+
+def _load_v4_job_title_mapping() -> dict:
+    """Load Job Title → Job Function from v4 Job Titles by Years sheet.
+
+    Translates v4's career Small Cluster to our standard 21 job functions.
+    """
+    title_to_fn = {}
+    if CLUSTER_BREAKDOWN_PATH and CLUSTER_BREAKDOWN_PATH.exists():
+        try:
+            jt = pd.read_excel(CLUSTER_BREAKDOWN_PATH, sheet_name="Job Titles by Years")
+            for _, row in jt.iterrows():
+                title = str(row.get("Job Title", "")).strip()
+                career_cluster = str(row.get("Small Cluster", "")).strip()
+                if not title or title == "nan" or career_cluster == "Unclassified Jobs":
+                    continue
+                fn = _CAREER_CLUSTER_TO_JOB_FUNCTION.get(career_cluster)
+                if fn:
+                    title_to_fn[title.lower()] = fn
+            print(f"[Stage 02] Loaded {len(title_to_fn)} job title→function mappings from v4 Job Titles by Years")
+        except Exception as e:
+            print(f"[Stage 02] ⚠️  Could not read Job Titles by Years: {e}")
+    return title_to_fn
+
+
 def _load_company_industry_lookup() -> tuple[dict, dict]:
-    """Load Company → Industry Group and (Company,JobTitle) → Job Function from classified Excel."""
+    """Load Company → Industry Group and (Company,JobTitle) → Job Function from v2 classified Excel.
+
+    Uses the 'Full Data with Industries' sheet.  Also loads supplementary info
+    from 'Industry Groups Summary' and 'Unusual-Unrelated Job Titles' sheets.
+    """
     company_to_industry = {}
     row_to_jobfn = {}  # (company, job_title) → job_function
+    unusual_titles = set()
 
     if CLASSIFIED_COMPANIES_PATH and CLASSIFIED_COMPANIES_PATH.exists():
         try:
-            cf = pd.read_excel(CLASSIFIED_COMPANIES_PATH)
+            # ── Full Data with Industries (main lookup) ──────────────────
+            cf = pd.read_excel(CLASSIFIED_COMPANIES_PATH, sheet_name="Full Data with Industries")
             for _, row in cf.iterrows():
                 company = str(row.get("Employing Organization", "")).strip()
                 industry = str(row.get("Industry Group (1 of 10)", "")).strip()
@@ -76,15 +173,38 @@ def _load_company_industry_lookup() -> tuple[dict, dict]:
                 if company and industry_clean and industry_clean != "nan":
                     company_to_industry[company] = industry_clean
 
-                if company and job_title and job_fn and job_fn != "nan":
+                if company and job_title and job_fn and job_fn not in ("nan", ""):
                     row_to_jobfn[(company, job_title)] = job_fn
 
-            print(f"[Stage 02] Loaded {len(company_to_industry)} company→industry mappings from real data")
-            print(f"[Stage 02] Loaded {len(row_to_jobfn)} (company,title)→function mappings from real data")
+            print(f"[Stage 02] Loaded {len(company_to_industry)} company→industry mappings from v2 Full Data")
+            print(f"[Stage 02] Loaded {len(row_to_jobfn)} (company,title)→function mappings from v2 Full Data")
+
+            # ── Industry Groups Summary (reference) ──────────────────────
+            try:
+                igs = pd.read_excel(CLASSIFIED_COMPANIES_PATH, sheet_name="Industry Groups Summary")
+                print(f"[Stage 02] Loaded {len(igs)} industry group summaries from v2")
+            except Exception:
+                pass
+
+            # ── Unusual-Unrelated Job Titles ─────────────────────────────
+            try:
+                ujt = pd.read_excel(CLASSIFIED_COMPANIES_PATH, sheet_name="Unusual-Unrelated Job Titles")
+                unusual_titles = set(ujt["Job Title"].dropna().str.strip().str.lower())
+                print(f"[Stage 02] Loaded {len(unusual_titles)} unusual/unrelated job titles from v2")
+            except Exception:
+                pass
+
+            # ── Companies Needing Research ───────────────────────────────
+            try:
+                cnr = pd.read_excel(CLASSIFIED_COMPANIES_PATH, sheet_name="Companies Needing Research")
+                print(f"[Stage 02] Loaded {len(cnr)} companies needing research from v2")
+            except Exception:
+                pass
+
         except Exception as e:
             print(f"[Stage 02] ⚠️  Could not read classified file: {e}")
 
-    return company_to_industry, row_to_jobfn
+    return company_to_industry, row_to_jobfn, unusual_titles
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -397,7 +517,10 @@ def classify(input_path: Path | None = None) -> pd.DataFrame:
 
     # ── Try loading real lookup tables first ──────────────────────────────
     real_cluster_lookup = _load_cluster_lookup()
-    real_company_lookup, real_jobtitle_lookup = _load_company_industry_lookup()
+    small_cluster_map   = _load_small_clusters()
+    all_majors_ref      = _load_all_majors()
+    v4_title_lookup     = _load_v4_job_title_mapping()
+    real_company_lookup, real_jobtitle_lookup, unusual_titles = _load_company_industry_lookup()
 
     # ── Classify majors ──────────────────────────────────────────────────
     # Build a combined lookup: real data first, then hardcoded fallback
@@ -440,23 +563,46 @@ def classify(input_path: Path | None = None) -> pd.DataFrame:
         df["Industry Group"] = "Other"
 
     # ── Classify job titles → Job Function ───────────────────────────────
-    if "Job Title" in df.columns and "Company" in df.columns and real_jobtitle_lookup:
-        # Use real per-row lookup: (company, job_title) → job_function
+    # Lookup chain: v2 (company,title)→function  →  v4 title→function  →  regex
+    if "Job Title" in df.columns:
         def lookup_job_fn(row):
-            key = (str(row.get("Company", "")).strip(), str(row.get("Job Title", "")).strip())
-            result = real_jobtitle_lookup.get(key)
-            if result:
-                return result
-            # Fallback to regex
-            return classify_job_title(row.get("Job Title", ""))
+            company = str(row.get("Company", "")).strip()
+            title   = str(row.get("Job Title", "")).strip()
+
+            # 1) v2 per-row lookup: (company, job_title) → job_function
+            if real_jobtitle_lookup:
+                result = real_jobtitle_lookup.get((company, title))
+                if result:
+                    return result
+
+            # 2) v4 exact job-title lookup (career cluster translated)
+            if v4_title_lookup:
+                result = v4_title_lookup.get(title.lower())
+                if result:
+                    return result
+
+            # 3) Regex fallback
+            return classify_job_title(title)
 
         df["Job Function"] = df.apply(lookup_job_fn, axis=1)
-        matched = df["Job Function"].ne("Other").sum()
-        print(f"[Stage 02] Job functions: {matched} matched, {len(df) - matched} as 'Other'")
-    elif "Job Title" in df.columns:
-        df["Job Function"] = df["Job Title"].apply(classify_job_title)
-        other_count = (df["Job Function"] == "Other").sum()
-        print(f"[Stage 02] Job functions: {other_count} classified as 'Other'")
+
+        v2_hits = 0
+        v4_hits = 0
+        regex_hits = 0
+        other_count = 0
+        for _, row in df.iterrows():
+            company = str(row.get("Company", "")).strip()
+            title   = str(row.get("Job Title", "")).strip()
+            fn      = row["Job Function"]
+            if real_jobtitle_lookup and (company, title) in real_jobtitle_lookup:
+                v2_hits += 1
+            elif v4_title_lookup and title.lower() in v4_title_lookup:
+                v4_hits += 1
+            elif fn == "Other":
+                other_count += 1
+            else:
+                regex_hits += 1
+        print(f"[Stage 02] Job functions: v2={v2_hits}, v4={v4_hits}, regex={regex_hits}, Other={other_count}")
     else:
         df["Job Function"] = "Other"
 
