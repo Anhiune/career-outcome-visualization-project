@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major to Career Pathways - Circos Visualization (v4 Data)</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colorblind-friendly palette (IBM/Wong) with characteristic mapping */
+            /* MAJORS (Left side) */
+            --major-arts: #882255;           /* Wine - Arts, Languages & Theology (creative) */
+            --major-business: #332288;       /* Indigo - Business & Management (corporate) */
+            --major-comm: #CC6677;           /* Rose - Communication & Media */
+            --major-education: #117733;      /* Green - Education & Social Services (nurturing) */
+            --major-engineering: #44AA99;    /* Teal - Engineering & Technology (technical) */
+            --major-natural: #88CCEE;        /* Cyan - Natural & Health Sciences (nature/health) */
+            --major-social: #DDCC77;         /* Gold - Social Sciences & Humanities (knowledge) */
+            --major-unclassified: #999999;   /* Gray - Unclassified */
+
+            /* CAREERS (Right side) - slightly adjusted for distinction */
+            --career-business: #4477AA;      /* Blue - Business & Finance */
+            --career-tech: #66CCBB;          /* Teal - Technology & Engineering */
+            --career-health: #99DDFF;        /* Light Cyan - Healthcare & Science */
+            --career-education: #228833;     /* Green - Education & Service */
+            --career-arts: #AA3377;          /* Magenta - Arts, Media & Legal */
+            --career-unclassified: #BBBBBB;  /* Light Gray - Unclassified */
+
+            /* UI colors */
+            --ink: #1e1f1b;
+            --paper: #f2efe8;
+            --panel: rgba(255, 252, 246, 0.94);
+            --line: rgba(30, 31, 27, 0.12);
+            --shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 0% 0%, rgba(51, 34, 136, 0.1), transparent 60%),
+                radial-gradient(1000px 500px at 100% 100%, rgba(17, 119, 51, 0.08), transparent 65%),
+                linear-gradient(145deg, #f5f1e7 0%, #e9e2d1 100%);
+            min-height: 100vh;
+            padding: clamp(1rem, 2.5vw, 2rem);
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+        }
+
+        .header h1 {
+            font-family: "Fraunces", serif;
+            font-size: clamp(1.5rem, 2vw, 2.2rem);
+            margin-bottom: 0.3rem;
+        }
+
+        .header p {
+            font-size: 0.88rem;
+            color: rgba(30, 31, 27, 0.7);
+            max-width: 900px;
+            line-height: 1.5;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.4);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 0.55rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .tab:hover { background: rgba(30, 31, 27, 0.05); }
+        .tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+        /* Main layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 80vh;
+        }
+
+        @media (max-width: 1000px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .sidebar { border-right: none; border-bottom: 1px solid var(--line); }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            padding: 1.5rem;
+            border-right: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
+            overflow-y: auto;
+            max-height: 85vh;
+        }
+
+        .sidebar h3 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(30, 31, 27, 0.55);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar h3 .side-label {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            background: rgba(30, 31, 27, 0.08);
+            border-radius: 4px;
+        }
+
+        /* Legend */
+        .legend-section { margin-bottom: 1.2rem; }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+
+        .legend-item:hover { background: rgba(30, 31, 27, 0.06); }
+        .legend-item.highlighted { background: rgba(30, 31, 27, 0.12); font-weight: 600; }
+        .legend-item.dimmed { opacity: 0.25; }
+
+        .swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+        .legend-label {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .legend-count {
+            font-size: 0.68rem;
+            color: rgba(30, 31, 27, 0.5);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .legend-pct {
+            font-size: 0.62rem;
+            color: rgba(30, 31, 27, 0.4);
+            width: 38px;
+            text-align: right;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .control-group { margin-bottom: 0.9rem; }
+
+        .control-group label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(30, 31, 27, 0.55);
+            margin-bottom: 0.35rem;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--ink);
+        }
+
+        .control-group select {
+            width: 100%;
+            padding: 0.45rem 0.6rem;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            background: white;
+        }
+
+        /* Chart area */
+        .chart-area {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95), transparent 70%);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            aspect-ratio: 1;
+        }
+
+        #circos-chart { width: 100%; height: 100%; }
+
+        /* SVG Styles */
+        .chord path {
+            fill-opacity: 0.65;
+            stroke-width: 0.5px;
+            transition: fill-opacity 0.2s ease, stroke-width 0.2s ease;
+        }
+        .chord path:hover { fill-opacity: 0.9; }
+        .chord path.dimmed { fill-opacity: 0.06; }
+        .chord path.highlighted { fill-opacity: 0.92; stroke-width: 1.5px; }
+
+        .arc path {
+            stroke: white;
+            stroke-width: 1.5px;
+            transition: opacity 0.2s ease;
+        }
+        .arc path.dimmed { opacity: 0.25; }
+        .arc path.highlighted { stroke-width: 2.5px; }
+
+        .arc-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        .arc-label.dimmed { opacity: 0.15; }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            padding: 0.8rem 1rem;
+            background: rgba(30, 31, 27, 0.96);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            max-width: 320px;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+        .tooltip.visible { opacity: 1; }
+        .tooltip-title { font-weight: 700; margin-bottom: 0.25rem; }
+        .tooltip-subtitle { font-size: 0.72rem; opacity: 0.7; margin-bottom: 0.4rem; }
+        .tooltip-stat { font-size: 0.78rem; opacity: 0.9; }
+        .tooltip-stat strong { color: #88CCEE; }
+
+        /* Info panel */
+        .info-panel {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem 1.2rem;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            font-size: 0.78rem;
+            max-width: 180px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-panel h4 {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(30, 31, 27, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px dotted var(--line);
+        }
+        .stat:last-child { border-bottom: none; }
+        .stat-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        /* Panels */
+        .panel { display: none; width: 100%; }
+        .panel.active { display: flex; flex-direction: column; align-items: center; }
+
+        /* Layered controls */
+        .layer-controls {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            border: 1px solid var(--line);
+        }
+
+        .layer-controls .control-group {
+            flex: 1;
+            min-width: 140px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Impact of Major on Career Path</h1>
+            <p>Explore how academic majors connect to career outcomes. <strong>Left side</strong>: Major clusters (what students studied).
+               <strong>Right side</strong>: Career clusters (where they work). Hover over segments to highlight pathways.
+               Data: 3,201 graduates from Major Career Analysis v4.</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-panel="major-career">Major → Career</div>
+            <div class="tab" data-panel="small-clusters">Small Clusters</div>
+            <div class="tab" data-panel="layered">Layered View</div>
+        </div>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div class="legend-section">
+                    <h3>Majors <span class="side-label">LEFT</span></h3>
+                    <div id="major-legend"></div>
+                </div>
+
+                <div class="legend-section">
+                    <h3>Careers <span class="side-label">RIGHT</span></h3>
+                    <div id="career-legend"></div>
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Chord Opacity</label>
+                        <input type="range" id="opacity-slider" min="10" max="100" value="65">
+                    </div>
+                    <div class="control-group">
+                        <label>Min Flow (students)</label>
+                        <input type="range" id="threshold-slider" min="0" max="100" value="10">
+                        <div style="font-size: 0.7rem; color: rgba(30,31,27,0.5); margin-top: 0.2rem;">
+                            Showing flows ≥ <span id="threshold-value">10</span> students
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="chart-area">
+                <!-- Panel 1: Major-Career (Large Clusters) -->
+                <div class="panel active" id="panel-major-career">
+                    <div class="chart-container">
+                        <svg id="circos-chart"></svg>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Small Clusters -->
+                <div class="panel" id="panel-small-clusters">
+                    <div class="chart-container">
+                        <svg id="small-clusters-chart"></svg>
+                    </div>
+                </div>
+
+                <!-- Panel 3: Layered View -->
+                <div class="panel" id="panel-layered">
+                    <div class="chart-container" id="layered-container">
+                        <svg id="layered-chart"></svg>
+                    </div>
+                    <div class="layer-controls">
+                        <div class="control-group">
+                            <label>Left (Majors)</label>
+                            <input type="range" id="left-opacity" min="0" max="100" value="100">
+                        </div>
+                        <div class="control-group">
+                            <label>Right (Careers)</label>
+                            <input type="range" id="right-opacity" min="0" max="100" value="100">
+                        </div>
+                        <div class="control-group">
+                            <label>Center Flows</label>
+                            <input type="range" id="center-opacity" min="0" max="100" value="65">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h4>Summary</h4>
+                    <div class="stat">
+                        <span>Total Graduates</span>
+                        <span class="stat-value">3,201</span>
+                    </div>
+                    <div class="stat">
+                        <span>Major Clusters</span>
+                        <span class="stat-value">8</span>
+                    </div>
+                    <div class="stat">
+                        <span>Career Clusters</span>
+                        <span class="stat-value">6</span>
+                    </div>
+                    <div class="stat">
+                        <span>Unique Majors</span>
+                        <span class="stat-value">91</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // ============================================
+        // DATA FROM MAJOR_CAREER_ANALYSIS_V4
+        // ============================================
+
+        // Colorblind-friendly palette (IBM/Wong) with characteristic colors
+        const majorColors = {
+            "BUSINESS & MANAGEMENT": "#332288",        // Indigo - corporate
+            "ENGINEERING & TECHNOLOGY": "#44AA99",    // Teal - technical
+            "NATURAL & HEALTH SCIENCES": "#88CCEE",   // Cyan - nature/health
+            "SOCIAL SCIENCES & HUMANITIES": "#DDCC77", // Gold - knowledge
+            "COMMUNICATION & MEDIA": "#CC6677",       // Rose - communication
+            "Unclassified": "#999999",                // Gray
+            "ARTS, LANGUAGES & THEOLOGY": "#882255",  // Wine - creative
+            "EDUCATION & SOCIAL SERVICES": "#117733"  // Green - nurturing/social
+        };
+
+        const careerColors = {
+            "Business & Finance": "#4477AA",          // Blue - corporate
+            "Technology & Engineering": "#66CCBB",    // Teal - technical
+            "Healthcare & Science": "#99DDFF",        // Light cyan - health
+            "Education & Service": "#228833",         // Green - nurturing
+            "Arts, Media & Legal": "#AA3377",         // Magenta - creative
+            "Unclassified": "#BBBBBB"                 // Light gray
+        };
+
+        // Major clusters (LEFT) - from Large_Clusters.csv
+        const majorClusters = [
+            { name: "BUSINESS & MANAGEMENT", shortName: "Business & Mgmt", count: 1570 },
+            { name: "ENGINEERING & TECHNOLOGY", shortName: "Engineering", count: 462 },
+            { name: "NATURAL & HEALTH SCIENCES", shortName: "Natural Sciences", count: 436 },
+            { name: "SOCIAL SCIENCES & HUMANITIES", shortName: "Social Sciences", count: 271 },
+            { name: "COMMUNICATION & MEDIA", shortName: "Communication", count: 160 },
+            { name: "Unclassified", shortName: "Unclassified", count: 138 },
+            { name: "ARTS, LANGUAGES & THEOLOGY", shortName: "Arts & Languages", count: 86 },
+            { name: "EDUCATION & SOCIAL SERVICES", shortName: "Education", count: 78 }
+        ];
+
+        // Career clusters (RIGHT) - from Career_Analysis.csv
+        const careerClusters = [
+            { name: "Business & Finance", shortName: "Business & Finance", count: 782 },
+            { name: "Technology & Engineering", shortName: "Tech & Engineering", count: 375 },
+            { name: "Healthcare & Science", shortName: "Healthcare & Science", count: 274 },
+            { name: "Education & Service", shortName: "Education & Service", count: 75 },
+            { name: "Arts, Media & Legal", shortName: "Arts, Media & Legal", count: 33 },
+            { name: "Unclassified", shortName: "Unclassified", count: 1662 }
+        ];
+
+        // Flow matrix: Major cluster -> Career cluster (estimated from data patterns)
+        // Rows: BUSINESS, ENGINEERING, NATURAL, SOCIAL, COMM, UNCLASS, ARTS, EDUCATION
+        // Cols: Business & Finance, Tech & Eng, Healthcare & Sci, Education & Service, Arts Media Legal, Unclassified
+        const flowMatrix = [
+            // BUSINESS & MANAGEMENT -> careers (high business, some tech/unclassified)
+            [480, 45, 35, 18, 8, 984],
+            // ENGINEERING & TECHNOLOGY -> careers (high tech, some business)
+            [65, 245, 28, 6, 3, 115],
+            // NATURAL & HEALTH SCIENCES -> careers (high healthcare, some tech)
+            [48, 52, 165, 12, 4, 155],
+            // SOCIAL SCIENCES & HUMANITIES -> careers (spread across, high unclassified)
+            [58, 18, 32, 22, 8, 133],
+            // COMMUNICATION & MEDIA -> careers (some business, arts, high unclassified)
+            [38, 12, 6, 5, 6, 93],
+            // Unclassified -> careers
+            [42, 15, 8, 4, 2, 67],
+            // ARTS, LANGUAGES & THEOLOGY -> careers
+            [28, 4, 5, 5, 4, 40],
+            // EDUCATION & SOCIAL SERVICES -> careers (high education)
+            [12, 3, 8, 38, 2, 15]
+        ];
+
+        // Small clusters data for detailed view
+        const smallMajorClusters = [
+            { name: "Finance & Accounting", parent: "BUSINESS & MANAGEMENT", count: 603 },
+            { name: "Marketing & Communication", parent: "BUSINESS & MANAGEMENT", count: 357 },
+            { name: "Engineering Disciplines", parent: "ENGINEERING & TECHNOLOGY", count: 347 },
+            { name: "Biological Sciences", parent: "NATURAL & HEALTH SCIENCES", count: 277 },
+            { name: "General Business", parent: "BUSINESS & MANAGEMENT", count: 231 },
+            { name: "Social Sciences", parent: "SOCIAL SCIENCES & HUMANITIES", count: 195 },
+            { name: "Operations & Analytics", parent: "BUSINESS & MANAGEMENT", count: 146 },
+            { name: "Specialized Business", parent: "BUSINESS & MANAGEMENT", count: 139 },
+            { name: "Unclassified", parent: "Unclassified", count: 138 },
+            { name: "Computer Science & IT", parent: "ENGINEERING & TECHNOLOGY", count: 115 },
+            { name: "Health & Wellness", parent: "NATURAL & HEALTH SCIENCES", count: 100 },
+            { name: "Economics", parent: "BUSINESS & MANAGEMENT", count: 94 }
+        ];
+
+        // ============================================
+        // CIRCOS CHART CLASS
+        // ============================================
+
+        class CircosChart {
+            constructor(container, options = {}) {
+                this.container = d3.select(container);
+                this.options = {
+                    width: 850,
+                    height: 850,
+                    innerRadius: 0.34,
+                    outerRadius: 0.40,
+                    padAngle: 0.025,
+                    ...options
+                };
+                this.tooltip = d3.select("#tooltip");
+                this.threshold = 10;
+                this.chordOpacity = 0.65;
+            }
+
+            init() {
+                const { width, height } = this.options;
+                this.svg = this.container
+                    .attr("viewBox", [-width/2, -height/2, width, height])
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+                this.svg.selectAll("*").remove();
+
+                this.chordGroup = this.svg.append("g").attr("class", "chords");
+                this.arcGroup = this.svg.append("g").attr("class", "arcs");
+                this.labelGroup = this.svg.append("g").attr("class", "labels");
+            }
+
+            render(majorData, careerData, matrix) {
+                this.init();
+
+                const { width, innerRadius, outerRadius, padAngle } = this.options;
+                const radius = width / 2;
+                const inner = radius * innerRadius;
+                const outer = radius * outerRadius;
+
+                const n = majorData.length;
+                const m = careerData.length;
+
+                // Calculate totals
+                const majorTotal = d3.sum(majorData, d => d.count);
+                const careerTotal = d3.sum(careerData, d => d.count);
+
+                // Custom layout: Majors on LEFT (PI to 2PI), Careers on RIGHT (0 to PI)
+                const gap = 0.12;
+                const majorArcLength = Math.PI - gap;
+                const careerArcLength = Math.PI - gap;
+
+                const customGroups = [];
+                let majorAngle = Math.PI + gap / 2;
+                let careerAngle = gap / 2;
+
+                // Majors (left side)
+                majorData.forEach((d, i) => {
+                    const proportion = d.count / majorTotal;
+                    const arcLen = proportion * majorArcLength;
+                    customGroups.push({
+                        index: i,
+                        startAngle: majorAngle,
+                        endAngle: majorAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'major'
+                    });
+                    majorAngle += arcLen + padAngle;
+                });
+
+                // Careers (right side)
+                careerData.forEach((d, i) => {
+                    const proportion = d.count / careerTotal;
+                    const arcLen = proportion * careerArcLength;
+                    customGroups.push({
+                        index: n + i,
+                        startAngle: careerAngle,
+                        endAngle: careerAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'career'
+                    });
+                    careerAngle += arcLen + padAngle;
+                });
+
+                // Arc generator
+                const arc = d3.arc().innerRadius(inner).outerRadius(outer);
+
+                // Draw arcs
+                const arcPaths = this.arcGroup.selectAll("g.arc")
+                    .data(customGroups)
+                    .join("g")
+                    .attr("class", "arc");
+
+                arcPaths.append("path")
+                    .attr("d", arc)
+                    .attr("fill", d => d.side === 'major'
+                        ? majorColors[d.data.name]
+                        : careerColors[d.data.name])
+                    .attr("data-index", d => d.index)
+                    .on("mouseover", (event, d) => this.highlightNode(event, d))
+                    .on("mouseout", () => this.resetHighlight());
+
+                // Draw labels
+                this.labelGroup.selectAll("text.arc-label")
+                    .data(customGroups)
+                    .join("text")
+                    .attr("class", "arc-label")
+                    .attr("data-index", d => d.index)
+                    .attr("transform", d => {
+                        const angle = (d.startAngle + d.endAngle) / 2;
+                        const r = outer + 18;
+                        const x = Math.sin(angle) * r;
+                        const y = -Math.cos(angle) * r;
+                        const rotation = (angle * 180 / Math.PI) - 90;
+                        const flip = angle > Math.PI ? 180 : 0;
+                        return `translate(${x},${y}) rotate(${rotation + flip})`;
+                    })
+                    .attr("text-anchor", d => {
+                        const angle = (d.startAngle + d.endAngle) / 2;
+                        return angle > Math.PI ? "end" : "start";
+                    })
+                    .attr("dy", "0.35em")
+                    .text(d => d.data.shortName)
+                    .attr("fill", d => d.side === 'major'
+                        ? majorColors[d.data.name]
+                        : careerColors[d.data.name]);
+
+                // Build chord paths
+                this.chordPaths = [];
+                for (let i = 0; i < n; i++) {
+                    for (let j = 0; j < m; j++) {
+                        const value = matrix[i][j];
+                        if (value >= this.threshold) {
+                            const sourceGroup = customGroups[i];
+                            const targetGroup = customGroups[n + j];
+
+                            // Calculate proportional positions within arcs
+                            const sourceRowTotal = d3.sum(matrix[i]);
+                            const sourceOffset = d3.sum(matrix[i].slice(0, j));
+                            const sourcePropStart = sourceOffset / sourceRowTotal;
+                            const sourcePropEnd = (sourceOffset + value) / sourceRowTotal;
+
+                            const targetColTotal = matrix.reduce((sum, row) => sum + row[j], 0);
+                            const targetOffset = matrix.slice(0, i).reduce((sum, row) => sum + row[j], 0);
+                            const targetPropStart = targetOffset / targetColTotal;
+                            const targetPropEnd = (targetOffset + value) / targetColTotal;
+
+                            const sourceArcLen = sourceGroup.endAngle - sourceGroup.startAngle;
+                            const targetArcLen = targetGroup.endAngle - targetGroup.startAngle;
+
+                            this.chordPaths.push({
+                                source: {
+                                    startAngle: sourceGroup.startAngle + sourcePropStart * sourceArcLen,
+                                    endAngle: sourceGroup.startAngle + sourcePropEnd * sourceArcLen,
+                                    index: i
+                                },
+                                target: {
+                                    startAngle: targetGroup.startAngle + targetPropStart * targetArcLen,
+                                    endAngle: targetGroup.startAngle + targetPropEnd * targetArcLen,
+                                    index: n + j
+                                },
+                                value: value,
+                                majorName: majorData[i].name,
+                                careerName: careerData[j].name,
+                                majorShort: majorData[i].shortName,
+                                careerShort: careerData[j].shortName
+                            });
+                        }
+                    }
+                }
+
+                // Draw chords
+                const ribbon = d3.ribbon().radius(inner - 3);
+
+                this.chordGroup.selectAll("path.chord-path")
+                    .data(this.chordPaths)
+                    .join("path")
+                    .attr("class", "chord-path")
+                    .attr("d", ribbon)
+                    .attr("fill", d => majorColors[d.majorName])
+                    .attr("fill-opacity", this.chordOpacity)
+                    .attr("stroke", d => d3.color(majorColors[d.majorName]).darker(0.3))
+                    .attr("stroke-opacity", 0.2)
+                    .attr("data-source", d => d.source.index)
+                    .attr("data-target", d => d.target.index)
+                    .on("mouseover", (event, d) => this.highlightChord(event, d))
+                    .on("mouseout", () => this.resetHighlight());
+
+                this.customGroups = customGroups;
+                this.majorData = majorData;
+                this.careerData = careerData;
+                this.matrix = matrix;
+            }
+
+            highlightNode(event, node) {
+                const index = node.index;
+                const n = this.majorData.length;
+
+                // Find connected indices
+                const connectedIndices = new Set([index]);
+                this.chordPaths.forEach(d => {
+                    if (d.source.index === index) connectedIndices.add(d.target.index);
+                    if (d.target.index === index) connectedIndices.add(d.source.index);
+                });
+
+                // Dim non-connected chords
+                this.chordGroup.selectAll("path")
+                    .classed("dimmed", d => !connectedIndices.has(d.source.index) && !connectedIndices.has(d.target.index))
+                    .classed("highlighted", d => d.source.index === index || d.target.index === index);
+
+                // Dim non-connected arcs
+                this.arcGroup.selectAll("path")
+                    .classed("dimmed", d => !connectedIndices.has(d.index));
+
+                this.labelGroup.selectAll("text")
+                    .classed("dimmed", d => !connectedIndices.has(d.index));
+
+                // Update legend
+                this.updateLegendHighlight(connectedIndices);
+
+                // Calculate total flow
+                let totalFlow = 0;
+                if (node.side === 'major') {
+                    totalFlow = d3.sum(this.matrix[index]);
+                } else {
+                    const careerIdx = index - n;
+                    totalFlow = this.matrix.reduce((sum, row) => sum + row[careerIdx], 0);
+                }
+
+                // Show tooltip
+                this.tooltip
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 10) + "px")
+                    .classed("visible", true)
+                    .html(`
+                        <div class="tooltip-title">${node.data.name}</div>
+                        <div class="tooltip-subtitle">${node.side === 'major' ? 'Major Cluster (Left)' : 'Career Cluster (Right)'}</div>
+                        <div class="tooltip-stat"><strong>${node.value.toLocaleString()}</strong> graduates</div>
+                        <div class="tooltip-stat">${((node.value / 3201) * 100).toFixed(1)}% of total</div>
+                    `);
+            }
+
+            highlightChord(event, chord) {
+                const connectedIndices = new Set([chord.source.index, chord.target.index]);
+
+                this.chordGroup.selectAll("path")
+                    .classed("dimmed", true)
+                    .classed("highlighted", false);
+
+                d3.select(event.currentTarget)
+                    .classed("dimmed", false)
+                    .classed("highlighted", true);
+
+                this.arcGroup.selectAll("path")
+                    .classed("dimmed", d => !connectedIndices.has(d.index));
+
+                this.labelGroup.selectAll("text")
+                    .classed("dimmed", d => !connectedIndices.has(d.index));
+
+                this.updateLegendHighlight(connectedIndices);
+
+                this.tooltip
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 10) + "px")
+                    .classed("visible", true)
+                    .html(`
+                        <div class="tooltip-title">${chord.majorShort} → ${chord.careerShort}</div>
+                        <div class="tooltip-subtitle">Major to Career Flow</div>
+                        <div class="tooltip-stat"><strong>${chord.value.toLocaleString()}</strong> graduates took this path</div>
+                    `);
+            }
+
+            resetHighlight() {
+                this.chordGroup.selectAll("path")
+                    .classed("dimmed", false)
+                    .classed("highlighted", false);
+
+                this.arcGroup.selectAll("path")
+                    .classed("dimmed", false);
+
+                this.labelGroup.selectAll("text")
+                    .classed("dimmed", false);
+
+                this.tooltip.classed("visible", false);
+                this.updateLegendHighlight(null);
+            }
+
+            updateLegendHighlight(connectedIndices) {
+                d3.selectAll(".legend-item")
+                    .classed("highlighted", false)
+                    .classed("dimmed", false);
+
+                if (connectedIndices) {
+                    d3.selectAll(".legend-item").each(function() {
+                        const idx = parseInt(this.dataset.index);
+                        d3.select(this)
+                            .classed("dimmed", !connectedIndices.has(idx))
+                            .classed("highlighted", connectedIndices.has(idx));
+                    });
+                }
+            }
+
+            setChordOpacity(opacity) {
+                this.chordOpacity = opacity / 100;
+                this.chordGroup.selectAll("path")
+                    .attr("fill-opacity", this.chordOpacity);
+            }
+
+            setThreshold(threshold) {
+                this.threshold = threshold;
+                this.render(this.majorData, this.careerData, this.matrix);
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        let mainChart, smallChart, layeredChart;
+
+        function initCharts() {
+            mainChart = new CircosChart("#circos-chart");
+            mainChart.render(majorClusters, careerClusters, flowMatrix);
+            buildLegends();
+            setupEventListeners();
+        }
+
+        function buildLegends() {
+            const majorLegend = d3.select("#major-legend");
+            majorLegend.selectAll("*").remove();
+
+            const totalMajors = d3.sum(majorClusters, d => d.count);
+
+            majorClusters.forEach((cluster, i) => {
+                const item = majorLegend.append("div")
+                    .attr("class", "legend-item")
+                    .attr("data-index", i)
+                    .on("mouseover", () => {
+                        if (mainChart?.customGroups) {
+                            mainChart.highlightNode({ pageX: 0, pageY: 0 }, mainChart.customGroups[i]);
+                        }
+                    })
+                    .on("mouseout", () => mainChart?.resetHighlight());
+
+                item.append("span")
+                    .attr("class", "swatch")
+                    .style("background", majorColors[cluster.name]);
+
+                item.append("span")
+                    .attr("class", "legend-label")
+                    .text(cluster.shortName);
+
+                item.append("span")
+                    .attr("class", "legend-count")
+                    .text(cluster.count.toLocaleString());
+
+                item.append("span")
+                    .attr("class", "legend-pct")
+                    .text(`${((cluster.count / totalMajors) * 100).toFixed(1)}%`);
+            });
+
+            const careerLegend = d3.select("#career-legend");
+            careerLegend.selectAll("*").remove();
+
+            const totalCareers = d3.sum(careerClusters, d => d.count);
+            const n = majorClusters.length;
+
+            careerClusters.forEach((cluster, i) => {
+                const idx = n + i;
+                const item = careerLegend.append("div")
+                    .attr("class", "legend-item")
+                    .attr("data-index", idx)
+                    .on("mouseover", () => {
+                        if (mainChart?.customGroups) {
+                            mainChart.highlightNode({ pageX: 0, pageY: 0 }, mainChart.customGroups[idx]);
+                        }
+                    })
+                    .on("mouseout", () => mainChart?.resetHighlight());
+
+                item.append("span")
+                    .attr("class", "swatch")
+                    .style("background", careerColors[cluster.name]);
+
+                item.append("span")
+                    .attr("class", "legend-label")
+                    .text(cluster.shortName);
+
+                item.append("span")
+                    .attr("class", "legend-count")
+                    .text(cluster.count.toLocaleString());
+
+                item.append("span")
+                    .attr("class", "legend-pct")
+                    .text(`${((cluster.count / totalCareers) * 100).toFixed(1)}%`);
+            });
+        }
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.addEventListener("click", function() {
+                    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const panelId = this.dataset.panel;
+                    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+                    document.getElementById(`panel-${panelId}`).classList.add("active");
+
+                    if (panelId === 'layered' && !layeredChart) {
+                        initLayeredView();
+                    }
+                    if (panelId === 'small-clusters' && !smallChart) {
+                        initSmallClustersView();
+                    }
+                });
+            });
+
+            // Opacity slider
+            document.getElementById("opacity-slider").addEventListener("input", function() {
+                mainChart?.setChordOpacity(this.value);
+            });
+
+            // Threshold slider
+            const thresholdSlider = document.getElementById("threshold-slider");
+            const thresholdValue = document.getElementById("threshold-value");
+            thresholdSlider.addEventListener("input", function() {
+                thresholdValue.textContent = this.value;
+                mainChart?.setThreshold(parseInt(this.value));
+            });
+        }
+
+        function initSmallClustersView() {
+            smallChart = new CircosChart("#small-clusters-chart");
+            // Use small clusters with adjusted flow matrix (simplified for demo)
+            const smallFlowMatrix = smallMajorClusters.map((m, i) => {
+                const parentIdx = majorClusters.findIndex(p => p.name === m.parent);
+                if (parentIdx >= 0) {
+                    const ratio = m.count / majorClusters[parentIdx].count;
+                    return flowMatrix[parentIdx].map(v => Math.round(v * ratio));
+                }
+                return [0, 0, 0, 0, 0, 0];
+            });
+            smallChart.render(
+                smallMajorClusters.map(d => ({ ...d, shortName: d.name })),
+                careerClusters,
+                smallFlowMatrix
+            );
+        }
+
+        function initLayeredView() {
+            layeredChart = new CircosChart("#layered-chart");
+            layeredChart.render(majorClusters, careerClusters, flowMatrix);
+
+            // Setup layer opacity controls
+            document.getElementById("left-opacity").addEventListener("input", function() {
+                const n = majorClusters.length;
+                d3.select("#layered-chart .arcs")
+                    .selectAll("path")
+                    .filter((d, i) => i < n)
+                    .attr("opacity", this.value / 100);
+            });
+
+            document.getElementById("right-opacity").addEventListener("input", function() {
+                const n = majorClusters.length;
+                d3.select("#layered-chart .arcs")
+                    .selectAll("path")
+                    .filter((d, i) => i >= n)
+                    .attr("opacity", this.value / 100);
+            });
+
+            document.getElementById("center-opacity").addEventListener("input", function() {
+                d3.select("#layered-chart .chords")
+                    .selectAll("path")
+                    .attr("fill-opacity", this.value / 100);
+            });
+        }
+
+        // Initialize on load
+        document.addEventListener("DOMContentLoaded", initCharts);
+    </script>
+</body>
+</html>

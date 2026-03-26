@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCIAL SCIENCES & HUMANITIES - Chord Diagram</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #f5f1e7 0%, #e9e2d1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1e1f1b;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(30, 31, 27, 0.7);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 30px;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.9) 0%, transparent 70%);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .ribbon {
+            fill-opacity: 0.65;
+            stroke: none;
+        }
+
+        .ribbon:hover {
+            fill-opacity: 0.9;
+            filter: drop-shadow(0 0 4px rgba(0,0,0,0.3));
+        }
+
+        .group-arc {
+            stroke: white;
+            stroke-width: 2;
+        }
+
+        .group-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .tooltip {
+            position: fixed;
+            padding: 10px 14px;
+            background: rgba(30, 31, 27, 0.92);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 300px;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1e1f1b;
+            font-size: 14px;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .stats {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9f7f2;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .major-indicator {
+            text-align: center;
+            color: rgba(30, 31, 27, 0.6);
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SOCIAL SCIENCES & HUMANITIES</h1>
+        <div class="subtitle">Career Pathways - True Chord Diagram</div>
+
+        <div class="chart-wrapper">
+            <svg id="chord-svg" width="850" height="850"></svg>
+            <div class="tooltip"></div>
+            <div class="major-indicator">Major Cluster (Left Side)</div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Career Destinations (Right Side)</div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #AA3377;"></span>Arts, Media & Legal
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #4477AA;"></span>Business & Finance
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #228833;"></span>Education & Service
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #99DDFF;"></span>Healthcare & Science
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #66CCBB;"></span>Technology & Engineering
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #BBBBBB;"></span>Unclassified
+            </div>
+        </div>
+
+        <div class="stats">
+            <strong>Distribution:</strong><br>
+            Unclassified: 133 (49.1%)<br>
+            Business & Finance: 58 (21.4%)<br>
+            Healthcare & Science: 32 (11.8%)<br>
+            Education & Service: 22 (8.1%)<br>
+            Technology & Engineering: 18 (6.6%)<br>
+            Arts, Media & Legal: 8 (3.0%)<br>
+        </div>
+    </div>
+
+    <script>
+    const matrix = [[0, 8, 58, 22, 32, 18, 133], [8, 0, 0, 0, 0, 0, 0], [58, 0, 0, 0, 0, 0, 0], [22, 0, 0, 0, 0, 0, 0], [32, 0, 0, 0, 0, 0, 0], [18, 0, 0, 0, 0, 0, 0], [133, 0, 0, 0, 0, 0, 0]];
+    const nodes = ["SOCIAL SCIENCES & HUMANITIES", "Arts, Media & Legal", "Business & Finance", "Education & Service", "Healthcare & Science", "Technology & Engineering", "Unclassified"];
+    const colorMap = {"SOCIAL SCIENCES & HUMANITIES": "#DDCC77", "Arts, Media & Legal": "#AA3377", "Business & Finance": "#4477AA", "Education & Service": "#228833", "Healthcare & Science": "#99DDFF", "Technology & Engineering": "#66CCBB", "Unclassified": "#BBBBBB"};
+    const majorCluster = 'SOCIAL SCIENCES & HUMANITIES';
+    const total = 271;
+
+    function createChordDiagram() {
+        const width = 850;
+        const height = 850;
+        const innerRadius = Math.min(width, height) * 0.3;
+        const outerRadius = innerRadius + 40;
+
+        const svg = d3.select('#chord-svg');
+        const group = svg.append('g')
+            .attr('transform', 'translate(' + width/2 + ',' + height/2 + ')');
+
+        // Create chord layout
+        const chordLayout = d3.chord()
+            .padAngle(0.05)
+            .sortSubgroups(d3.descending);
+
+        const chords = chordLayout(matrix);
+
+        // Create color scale
+        const colorScale = d3.scaleOrdinal()
+            .domain(nodes)
+            .range(nodes.map(d => colorMap[d]));
+
+        // Draw ribbon paths
+        const ribbon = d3.ribbon()
+            .source(d => d.source)
+            .target(d => d.target);
+
+        group.append('g')
+            .selectAll('path')
+            .data(chords)
+            .join('path')
+            .attr('class', 'ribbon')
+            .attr('d', ribbon)
+            .attr('fill', d => colorScale(nodes[d.source.index]))
+            .attr('opacity', 0.65)
+            .on('mouseover', function(event, d) {
+                const source = nodes[d.source.index];
+                const target = nodes[d.target.index];
+                const value = matrix[d.source.index][d.target.index];
+                const pct = ((value / total) * 100).toFixed(1);
+
+                // Highlight this ribbon
+                d3.select(this).attr('opacity', 0.9);
+
+                showTooltip(source + ' -> ' + target + '<br>' + value + ' students (' + pct + '%)');
+            })
+            .on('mouseout', function() {
+                d3.select(this).attr('opacity', 0.65);
+                hideTooltip();
+            });
+
+        // Draw arcs
+        const arcGenerator = d3.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
+
+        group.append('g')
+            .selectAll('g')
+            .data(chords.groups)
+            .join('g')
+            .append('path')
+            .attr('class', 'group-arc')
+            .attr('d', arcGenerator)
+            .attr('fill', d => colorScale(nodes[d.index]))
+            .attr('stroke', 'white')
+            .attr('stroke-width', 2);
+
+        // Add labels
+        group.append('g')
+            .selectAll('text')
+            .data(chords.groups)
+            .join('text')
+            .attr('class', 'group-label')
+            .attr('dy', d => {
+                const angle = (d.startAngle + d.endAngle) / 2;
+                return Math.sin(angle) > 0 ? 15 : -5;
+            })
+            .append('textPath')
+            .attr('href', (d, i) => '#arc-' + i)
+            .attr('startOffset', '50%')
+            .attr('text-anchor', 'middle')
+            .text(d => nodes[d.index])
+            .style('font-size', '11px')
+            .style('font-weight', '600');
+
+        // Draw arcs for path references
+        group.selectAll('defs')
+            .data(chords.groups)
+            .enter()
+            .append('defs')
+            .append('path')
+            .attr('id', (d, i) => 'arc-' + i)
+            .attr('d', arcGenerator);
+    }
+
+    function showTooltip(html) {
+        const tooltip = document.querySelector('.tooltip');
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+        document.addEventListener('mousemove', moveTooltip);
+    }
+
+    function hideTooltip() {
+        document.querySelector('.tooltip').style.display = 'none';
+        document.removeEventListener('mousemove', moveTooltip);
+    }
+
+    function moveTooltip(e) {
+        const tooltip = document.querySelector('.tooltip');
+        tooltip.style.left = (e.pageX + 10) + 'px';
+        tooltip.style.top = (e.pageY + 10) + 'px';
+    }
+
+    window.addEventListener('load', createChordDiagram);
+    </script>
+</body>
+</html>

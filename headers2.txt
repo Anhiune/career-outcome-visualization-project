@@ -1,0 +1,11 @@
+Large Cluster
+Small Cluster
+Major
+Count
+
+                Large Cluster    Small Cluster             Major  Count
+0  ARTS, LANGUAGES & THEOLOGY  Arts & Theology  Catholic Studies     30
+1  ARTS, LANGUAGES & THEOLOGY  Arts & Theology  Music - Business     11
+2  ARTS, LANGUAGES & THEOLOGY  Arts & Theology          Theology      3
+3  ARTS, LANGUAGES & THEOLOGY  Arts & Theology             Music      3
+4  ARTS, LANGUAGES & THEOLOGY  Arts & Theology       Art History      2

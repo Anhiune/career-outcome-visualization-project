@@ -1,0 +1,170 @@
+﻿/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,.cf:after {
+    content: " ";
+/* 1 */
+    display: table;
+/* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    zoom: 1;
+}
+
+img {
+    display: block;
+}
+
+#main {
+    float: none;
+    margin: 0 auto;
+    width: 1180px;
+}
+
+#main_wrapper_outer {
+    background: #FFF;
+}
+
+#main_wrapper_inner {
+    background: none;
+}
+
+#main_wrapper_inner .center_wrapper {
+    margin: 0 auto;
+    width: 1180px;
+}
+
+#main_wrapper_inner .center_wrapper h2,#main_wrapper_inner .center_wrapper p {
+    margin-left: 25px;
+}
+
+#careerpath {
+  background-color: #FFFFFF;
+  border-top: 1px solid;
+  font: 0.9em Verdana,sans-serif;
+  height: 990px;
+  margin-left: 20px;
+  overflow: hidden;
+  padding: 20px 0 0;
+  position: relative;
+}
+
+#careerpath #infotext {
+  font-size: 11.5px;
+   margin-left: 5px; margin-right: 20px; text-align: justify;
+}
+
+#careerpath .bigpic h2 {
+    margin-left: 0px;
+}
+
+.panel-container,.panel-container * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.panel-container {
+    background-color: #FFF;
+    height: 990px;
+    overflow: hidden;
+    position: relative;
+/*width: 3540px;*/
+}
+
+.panel {
+    float: left;
+    width: 1180px;
+}
+
+.tabs {
+  cursor: default;
+  display: block;
+  height: 30px;
+  padding-left: 20px;
+  padding-top: 0;
+  position: relative;
+}
+
+.tabs .tab {
+  cursor: pointer;
+  display: block;
+  float: left;
+  font: 600 1.3em/1 Georgia,serif;
+  margin-right: 40px;
+  padding: 8px 5px 0;
+  position: relative;
+  text-align: center;
+  z-index: 10;
+}
+
+.tabs .lava {
+/* Set it to absolute */
+    position: absolute;
+    top: 0;
+    left: 0;
+/* display the lava in bottom most layer */
+    z-index: 0;
+/* width = half size of #moving_tab */
+    /*width: 150px;*/
+/* height = height of .tabs */
+    height: 30px;
+/* styling 
+    background: #abe3eb;*/
+    background: url("http://web.williams.edu/Mathematics/devadoss/img/backgrounds.gif") repeat-x scroll 0 -222px #958573;
+}
+
+h2 {
+    margin-left: 1em;
+}
+
+.bigpic {
+    float: left;
+    width: 900px;
+}
+
+.tinypics {
+    float: left;
+    width: 240px;
+    line-height: 1;
+}
+#main_wrapper_inner .tinypics p.info {
+  background-color: #FFFFE0;
+  border: 1px solid #E8E8E8;
+  margin-bottom: 1em;
+  margin-left: 0;
+  padding: 6px;
+}
+.tinypics span {
+    float: left;
+    cursor: pointer;
+    height: 130px;
+    text-align: center;
+}
+
+#panel-1 .tinypics span {
+  display: block;
+  float: none;
+  margin: 0 auto;
+  width: 180px;
+}
+
+#panel-2 .tinypics span,
+#panel-3 .tinypics span {
+    width: 80px;
+}

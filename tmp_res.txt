@@ -1,0 +1,37 @@
+|    | Major (Small Cluster)     | Industry (Job Function)      |   Count |
+|---:|:--------------------------|:-----------------------------|--------:|
+|  0 | Finance & Accounting      | Finance & Accounting         |     284 |
+|  1 | Finance & Accounting      | Other                        |     196 |
+|  2 | Engineering Disciplines   | Engineering                  |     189 |
+|  3 | Biological Sciences       | Other                        |     132 |
+|  4 | Marketing & Communication | Other                        |     122 |
+|  5 | General Business          | Other                        |     116 |
+|  6 | Social Sciences           | Other                        |     112 |
+|  7 | Engineering Disciplines   | Other                        |     106 |
+|  8 | Marketing & Communication | Sales & Business Development |      68 |
+|  9 | Biological Sciences       | Healthcare & Clinical        |      63 |
+| 10 | Health & Wellness         | Other                        |      62 |
+| 11 | Computer Science & IT     | Software & IT                |      61 |
+| 12 | Humanities & Liberal Arts | Other                        |      59 |
+| 13 | Marketing & Communication | Marketing & Communications   |      58 |
+| 14 | General Business          | Sales & Business Development |      53 |
+
+---
+
+|    | Job Title                           | Industry (Small Cluster)   |
+|---:|:------------------------------------|:---------------------------|
+|  0 | Account Executive                   | Sales & Marketing          |
+|  1 | Account Manager                     | Leadership (General)       |
+|  2 | Accountant                          | Accounting & Audit         |
+|  3 | Actuarial Analyst                   | Finance & Investment       |
+|  4 | Analyst                             | Unclassified Jobs          |
+|  5 | Associate                           | Unclassified Jobs          |
+|  6 | Associate Consultant                | Unclassified Jobs          |
+|  7 | Audit Associate                     | Accounting & Audit         |
+|  8 | Business Analyst                    | Unclassified Jobs          |
+|  9 | Business Development Representative | Unclassified Jobs          |
+| 10 | Case Manager                        | Social Service             |
+| 11 | Communications Coordinator          | Management & Operations    |
+| 12 | Credit Analyst                      | Finance & Investment       |
+| 13 | Data Analyst                        | Software & Data            |
+| 14 | Design Engineer                     | Engineering                |

@@ -1,0 +1,106 @@
+﻿perl :  at C:/Users/hoa
+ng/Downloads/circos-0.6
+9-10/circos-0.69-10/bin
+/../lib/Circos/Error.pm
+ line 425, <F> line 8.
+At line:1 char:1
++ perl C:\Users\hoang\D
+ownloads\circos-0.69-10
+\circos-0.69-10\bin\cir
+co ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ( at C:/Users/   
+ ho...25, <F> line     
+8.:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+	Circos::Error::fatal_e
+rror("data", "inconsist
+ent_karyotype_coordinat
+es", 0, 0) called at C:
+/Users/hoang/Downloads/
+circos-0.69-10/circos-0
+.69-10/bin/../lib/Circo
+s/Karyotype.pm line 134
+	Circos::Karyotype::rea
+d_karyotype_file("c:/Us
+ers/hoang/Documents/pro
+ject_test/major_industr
+y_circos_d"..., 
+HASH(0x1b8d3c86ff0)) 
+called at C:/Users/hoan
+g/Downloads/circos-0.69
+-10/circos-0.69-10/bin/
+../lib/Circos/Karyotype
+.pm line 92
+	Circos::Karyotype::rea
+d_karyotype("file", "c:
+/Users/hoang/Documents/
+project_test/major_indu
+stry_circos_d"...) 
+called at C:/Users/hoan
+g/Downloads/circos-0.69
+-10/circos-0.69-10/bin/
+../lib/Circos.pm line 
+218
+	Circos::run("Circos", 
+"_argv", "-conf c:\\Use
+rs\\hoang\\Documents\\p
+roject_test\\major_indu
+stry_ci"..., 
+"configfile", "c:\\User
+s\\hoang\\Documents\\pr
+oject_test\\major_indus
+try_circos_d"..., 
+"_cwd", "C:/Users/hoang
+/Documents/project_test
+") called at C:\Users\h
+oang\Downloads\circos-0
+.69-10\circos-0.69-10\b
+in\circos line 536
+debuggroup summary 0.40s welcome to circos v0.69-10 25 August 2025 on Perl 5.042000
+debuggroup summary 0.40s current working directory C:/Users/hoang/Documents/project_test
+debuggroup summary 0.40s command C:\Users\hoang\Downloads\circos-0.69-10\circos-0.69-10\bin\circos -conf c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\highlighted_check\circos.conf
+debuggroup summary 0.40s loading configuration from file c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\highlighted_check\circos.conf
+debuggroup summary 0.40s found conf file c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\highlighted_check\circos.conf
+debuggroup summary 0.71s debug will appear for these features: output,summary
+debuggroup summary 0.72s bitmap output image c:/Users/hoang/Documents/project_test/major_industry_circos_draft1/highlighted_check/.\highlighted_circos.png
+debuggroup summary 0.72s parsing karyotype and organizing ideograms
+
+  *** CIRCOS ERROR ***
+
+      cwd: C:/Users/hoang/Documents/project_test
+
+      command: C:\Users\hoang\Downloads\circos-0.69-10\circos-0.69-10\bin\circos
+      -conf
+      c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\highlighted_check\circos.conf
+
+  Start [0] must be smaller than end [0] coordinate in karyotype file.
+
+  If you are having trouble debugging this error, first read the best practices
+  tutorial for helpful tips that address many common problems
+
+      http://www.circos.ca/documentation/tutorials/reference/best_practices
+
+  The debugging facility is helpful to figure out what's happening under the
+  hood
+
+      http://www.circos.ca/documentation/tutorials/configuration/debugging
+
+  If you're still stumped, get support in the Circos Google Group.
+
+      http://groups.google.com/group/circos-data-visualization
+
+  Please include this error, all your configuration, data files and the version
+  of Circos you're running (circos -v). Do not email me directly -- please use
+  the group.
+
+  Stack trace:

@@ -1,0 +1,16 @@
+Major
+Major Cluster
+Major Subcluster
+Academic Division
+Degree Level
+Graduation Year
+Job Title
+Job Function
+Company
+Industry Group
+State
+
+                  Major             Major Cluster       Major Subcluster           Academic Division       Degree Level  Graduation Year                          Job Title                  Job Function Company               Industry Group      State
+0      Computer Science  ENGINEERING & TECHNOLOGY  Computer Science & IT    Opus College of Business  Bachelor's Degree             2021          Cyber Security Specialist                 Software & IT  148 FW  Government & Public Service  Minnesota
+1  Financial Management     BUSINESS & MANAGEMENT   Finance & Accounting  College of Arts & Sciences  Bachelor's Degree             2021                    Finance Analyst          Finance & Accounting      3M        Technology & Software  Minnesota
+2      Entrepreneurship     BUSINESS & MANAGEMENT       General Business  College of Arts & Sciences  Bachelor's Degree             2021  Customer Issue Resolution Analyst  Sales & Business Development      3M        Technology & Software  Minnesota

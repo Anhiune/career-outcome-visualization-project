@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layered Circos Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1e1f1b;
+            --paper: #f2efe8;
+            --panel: rgba(255, 252, 246, 0.76);
+            --line: rgba(30, 31, 27, 0.14);
+            --left: #d54f32;
+            --right: #0f7a78;
+            --flow: #c89e2f;
+            --shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(1000px 520px at 0% 0%, rgba(213, 79, 50, 0.18), transparent 68%),
+                radial-gradient(900px 500px at 100% 100%, rgba(15, 122, 120, 0.2), transparent 72%),
+                linear-gradient(145deg, #f5f1e7 0%, #e9e2d1 100%);
+            min-height: 100vh;
+            padding: clamp(1.2rem, 2.8vw, 2.2rem);
+        }
+
+        .shell {
+            max-width: 1240px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.16));
+        }
+
+        .tabset {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            background: rgba(255, 255, 255, 0.56);
+        }
+
+        .tab.active {
+            background: var(--ink);
+            color: var(--paper);
+            border-color: var(--ink);
+        }
+
+        .status {
+            font-size: 0.84rem;
+            color: rgba(30, 31, 27, 0.78);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(240px, 290px) 1fr;
+            min-height: 78vh;
+        }
+
+        .side {
+            border-right: 1px solid var(--line);
+            padding: 1.4rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.26));
+            display: grid;
+            gap: 1rem;
+            align-content: start;
+        }
+
+        h1 {
+            font-family: "Fraunces", serif;
+            margin: 0;
+            font-size: clamp(1.4rem, 1.45vw + 1rem, 2rem);
+            line-height: 1.1;
+            letter-spacing: 0.01em;
+        }
+
+        .intro {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(30, 31, 27, 0.84);
+        }
+
+        .control-row {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .control-row label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(30, 31, 27, 0.72);
+        }
+
+        .control-row input[type="range"] {
+            width: 100%;
+            accent-color: var(--ink);
+        }
+
+        .legend {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.84rem;
+        }
+
+        .swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .view {
+            position: relative;
+            padding: clamp(1rem, 2.2vw, 2rem);
+            display: grid;
+            place-items: center;
+        }
+
+        .aura {
+            position: absolute;
+            width: 80%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(200, 158, 47, 0.2), rgba(200, 158, 47, 0) 62%);
+            filter: blur(8px);
+            pointer-events: none;
+            animation: pulse 4.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(0.98);
+                opacity: 0.48;
+            }
+
+            to {
+                transform: scale(1.03);
+                opacity: 0.78;
+            }
+        }
+
+        .circos-stack {
+            width: min(88vh, 100%);
+            max-width: 900px;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            border-radius: 24px;
+            border: 1px solid rgba(30, 31, 27, 0.09);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.92), rgba(248, 243, 233, 0.56));
+            box-shadow: 0 20px 60px rgba(30, 31, 27, 0.13);
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 0.25s ease, transform 0.5s ease;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .layer.base {
+            opacity: 0.22;
+            filter: grayscale(1) contrast(1.05);
+        }
+
+        .layer.left {
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+            mix-blend-mode: multiply;
+            filter: saturate(1.15) hue-rotate(-12deg);
+            opacity: 0.9;
+        }
+
+        .layer.right {
+            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+            mix-blend-mode: multiply;
+            filter: saturate(1.15) hue-rotate(34deg);
+            opacity: 0.92;
+        }
+
+        .layer.flow {
+            clip-path: circle(35% at 50% 50%);
+            mix-blend-mode: screen;
+            filter: saturate(1.45) contrast(1.08) hue-rotate(4deg);
+            opacity: 0.78;
+        }
+
+        .ring {
+            position: absolute;
+            inset: 13%;
+            border-radius: 50%;
+            border: 1px dashed rgba(30, 31, 27, 0.18);
+            pointer-events: none;
+        }
+
+        .caption {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: rgba(30, 31, 27, 0.78);
+            text-align: center;
+        }
+
+        @media (max-width: 920px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side {
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .circos-stack {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <div class="topbar">
+            <div class="tabset">
+                <span class="tab active">Compilation Layer</span>
+                <span class="tab">Time Slice Layer</span>
+                <span class="tab">Double Major Layer</span>
+            </div>
+            <div class="status">Layered isolated circos preview</div>
+        </div>
+
+        <section class="layout">
+            <aside class="side">
+                <h1>Isolated Circos Overlay</h1>
+                <p class="intro">
+                    This view stacks isolated regions of one circos graphic on top of each other. It recreates the
+                    classic Williams interaction style while keeping a modern composition.
+                </p>
+
+                <div class="control-row">
+                    <label for="leftOpacity">Left Ring Opacity</label>
+                    <input id="leftOpacity" type="range" min="0" max="100" value="90">
+                </div>
+
+                <div class="control-row">
+                    <label for="rightOpacity">Right Ring Opacity</label>
+                    <input id="rightOpacity" type="range" min="0" max="100" value="92">
+                </div>
+
+                <div class="control-row">
+                    <label for="flowOpacity">Flow Core Opacity</label>
+                    <input id="flowOpacity" type="range" min="0" max="100" value="78">
+                </div>
+
+                <div class="control-row">
+                    <label for="twist">Subtle Rotation Offset</label>
+                    <input id="twist" type="range" min="-20" max="20" value="0">
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="swatch" style="background: var(--left)"></span>
+                        <span>Major clusters (left half)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="swatch" style="background: var(--right)"></span>
+                        <span>Career clusters (right half)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="swatch" style="background: var(--flow)"></span>
+                        <span>Crossing flows (center core)</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="view">
+                <div class="aura" aria-hidden="true"></div>
+
+                <figure class="circos-stack" id="circosStage" aria-label="Layered circos diagram">
+                    <img class="layer base" src="major_industry_circos.svg" alt="Major to career circos base">
+                    <img class="layer left" id="leftLayer" src="major_industry_circos.svg"
+                        alt="Left major sector isolated">
+                    <img class="layer right" id="rightLayer" src="major_industry_circos.svg"
+                        alt="Right career sector isolated">
+                    <img class="layer flow" id="flowLayer" src="major_industry_circos.svg"
+                        alt="Center flow region isolated">
+                    <div class="ring" aria-hidden="true"></div>
+                </figure>
+
+                <p class="caption">Source asset: major_industry_circos.svg</p>
+            </main>
+        </section>
+    </div>
+
+    <script>
+        const leftOpacity = document.getElementById("leftOpacity");
+        const rightOpacity = document.getElementById("rightOpacity");
+        const flowOpacity = document.getElementById("flowOpacity");
+        const twist = document.getElementById("twist");
+
+        const leftLayer = document.getElementById("leftLayer");
+        const rightLayer = document.getElementById("rightLayer");
+        const flowLayer = document.getElementById("flowLayer");
+
+        const setOpacity = () => {
+            leftLayer.style.opacity = Number(leftOpacity.value) / 100;
+            rightLayer.style.opacity = Number(rightOpacity.value) / 100;
+            flowLayer.style.opacity = Number(flowOpacity.value) / 100;
+        };
+
+        const setRotation = () => {
+            const deg = Number(twist.value);
+            leftLayer.style.transform = `rotate(${deg * -0.35}deg)`;
+            rightLayer.style.transform = `rotate(${deg * 0.35}deg)`;
+            flowLayer.style.transform = `rotate(${deg}deg) scale(1.01)`;
+        };
+
+        [leftOpacity, rightOpacity, flowOpacity].forEach((slider) => {
+            slider.addEventListener("input", setOpacity);
+        });
+
+        twist.addEventListener("input", setRotation);
+
+        setOpacity();
+        setRotation();
+    </script>
+</body>
+
+</html>

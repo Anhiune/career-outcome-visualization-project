@@ -1,0 +1,6 @@
+seg major_3 0 8 career_0 4 12 color=cm_3_a5
+seg major_3 8 488 career_1 28 508 color=cm_3_a5
+seg major_3 488 506 career_2 5 23 color=cm_3_a5
+seg major_3 506 541 career_3 5 40 color=cm_3_a5
+seg major_3 541 586 career_4 4 49 color=cm_3_a5
+seg major_3 586 1570 career_5 40 1024 color=cm_3_a5

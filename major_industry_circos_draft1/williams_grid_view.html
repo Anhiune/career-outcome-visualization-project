@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major to Career - Grid View (All 8 Clusters)</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --major-business: #332288;
+            --major-engineering: #44AA99;
+            --major-natural: #88CCEE;
+            --major-social: #DDCC77;
+            --major-comm: #CC6677;
+            --major-arts: #882255;
+            --major-education: #117733;
+            --major-unclassified: #999999;
+
+            --career-business: #4477AA;
+            --career-tech: #66CCBB;
+            --career-health: #99DDFF;
+            --career-education: #228833;
+            --career-arts: #AA3377;
+            --career-unclassified: #BBBBBB;
+
+            --ink: #1e1f1b;
+            --paper: #f2efe8;
+            --panel: rgba(255, 252, 246, 0.94);
+            --line: rgba(30, 31, 27, 0.12);
+            --shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 0% 0%, rgba(51, 34, 136, 0.1), transparent 60%),
+                radial-gradient(1000px 500px at 100% 100%, rgba(17, 119, 51, 0.08), transparent 65%),
+                linear-gradient(145deg, #f5f1e7 0%, #e9e2d1 100%);
+            min-height: 100vh;
+            padding: clamp(1rem, 2.5vw, 2rem);
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+        }
+
+        .header h1 {
+            font-family: "Fraunces", serif;
+            font-size: clamp(1.5rem, 2vw, 2.2rem);
+            margin-bottom: 0.3rem;
+        }
+
+        .header p {
+            font-size: 0.88rem;
+            color: rgba(30, 31, 27, 0.7);
+            max-width: 1200px;
+            line-height: 1.5;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cluster-card {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(30, 31, 27, 0.06);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cluster-card:hover {
+            box-shadow: 0 12px 30px rgba(30, 31, 27, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .cluster-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+        }
+
+        .cluster-count {
+            font-size: 0.75rem;
+            color: rgba(30, 31, 27, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            margin-bottom: 1rem;
+        }
+
+        svg { width: 100%; height: 100%; }
+
+        .chord path {
+            fill-opacity: 0.6;
+            stroke-width: 0.3px;
+            transition: fill-opacity 0.2s ease;
+        }
+
+        .arc path {
+            stroke: white;
+            stroke-width: 1px;
+        }
+
+        .arc-label {
+            font-size: 8px;
+            font-weight: 600;
+            pointer-events: none;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 0.6rem;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: rgba(30, 31, 27, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-top: 0.2rem;
+        }
+
+        .tooltip {
+            position: fixed;
+            padding: 0.6rem 0.8rem;
+            background: rgba(30, 31, 27, 0.96);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            max-width: 240px;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .tooltip.visible { opacity: 1; }
+        .tooltip-title { font-weight: 700; margin-bottom: 0.15rem; }
+        .tooltip-stat { font-size: 0.7rem; opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+
+        .legend-footer {
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid var(--line);
+        }
+
+        .legend-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(30, 31, 27, 0.55);
+            margin-bottom: 1rem;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem;
+            font-size: 0.75rem;
+        }
+
+        .swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            border: 0.5px solid rgba(30, 31, 27, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Major to Career Pathways - Grid View</h1>
+            <p>Overview of all 8 major clusters and their career distributions. Each diagram shows one major cluster (left) flowing to all 6 career destinations (right).
+               Hover over connections to see graduate counts. Larger ribbons indicate more graduates.</p>
+        </div>
+
+        <div class="grid-container" id="grid-container">
+            <!-- Cards generated by JavaScript -->
+        </div>
+
+        <div class="legend-footer">
+            <div class="legend-title">Legend</div>
+            <div class="legend-grid">
+                <div>
+                    <div class="legend-title">Major Clusters</div>
+                    <div id="major-legend"></div>
+                </div>
+                <div>
+                    <div class="legend-title">Career Destinations</div>
+                    <div id="career-legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // DATA
+        const majorColors = {
+            "BUSINESS & MANAGEMENT": "#332288",
+            "ENGINEERING & TECHNOLOGY": "#44AA99",
+            "NATURAL & HEALTH SCIENCES": "#88CCEE",
+            "SOCIAL SCIENCES & HUMANITIES": "#DDCC77",
+            "COMMUNICATION & MEDIA": "#CC6677",
+            "ARTS, LANGUAGES & THEOLOGY": "#882255",
+            "EDUCATION & SOCIAL SERVICES": "#117733",
+            "Unclassified": "#999999"
+        };
+
+        const careerColors = {
+            "Business & Finance": "#4477AA",
+            "Technology & Engineering": "#66CCBB",
+            "Healthcare & Science": "#99DDFF",
+            "Education & Service": "#228833",
+            "Arts, Media & Legal": "#AA3377",
+            "Unclassified": "#BBBBBB"
+        };
+
+        const majorClusters = [
+            { name: "BUSINESS & MANAGEMENT", count: 1570 },
+            { name: "ENGINEERING & TECHNOLOGY", count: 462 },
+            { name: "NATURAL & HEALTH SCIENCES", count: 436 },
+            { name: "SOCIAL SCIENCES & HUMANITIES", count: 271 },
+            { name: "COMMUNICATION & MEDIA", count: 160 },
+            { name: "ARTS, LANGUAGES & THEOLOGY", count: 86 },
+            { name: "EDUCATION & SOCIAL SERVICES", count: 78 },
+            { name: "Unclassified", count: 138 }
+        ];
+
+        const careerClusters = [
+            { name: "Business & Finance", count: 782 },
+            { name: "Technology & Engineering", count: 375 },
+            { name: "Healthcare & Science", count: 274 },
+            { name: "Education & Service", count: 75 },
+            { name: "Arts, Media & Legal", count: 33 },
+            { name: "Unclassified", count: 1662 }
+        ];
+
+        const flowMatrix = [
+            [480, 45, 35, 18, 8, 984],
+            [65, 245, 28, 6, 3, 115],
+            [48, 52, 165, 12, 4, 155],
+            [58, 18, 32, 22, 8, 133],
+            [38, 12, 6, 5, 6, 93],
+            [28, 4, 5, 5, 4, 40],
+            [12, 3, 8, 38, 2, 15],
+            [42, 15, 8, 4, 2, 67]
+        ];
+
+        // Create grid cards
+        const gridContainer = d3.select("#grid-container");
+
+        majorClusters.forEach((major, idx) => {
+            const card = gridContainer.append("div").attr("class", "cluster-card");
+
+            card.append("div").attr("class", "cluster-title").text(major.name);
+            card.append("div").attr("class", "cluster-count")
+                .text(`${major.count} graduates`);
+
+            const chartWrapper = card.append("div").attr("class", "chart-wrapper");
+            const svg = chartWrapper.append("svg");
+
+            // Render circos for this cluster
+            new MiniCircosChart(svg, {
+                width: 400,
+                height: 400
+            }).render([major], careerClusters, [flowMatrix[idx]]);
+
+            // Stats
+            const stats = card.append("div").attr("class", "card-stats");
+            const flows = flowMatrix[idx];
+            const topCareerIdx = flows.indexOf(Math.max(...flows));
+            const topCareer = careerClusters[topCareerIdx];
+
+            stats.append("div").attr("class", "stat")
+                .html(`<div class="stat-value">${careerClusters.length}</div><div class="stat-label">Destinations</div>`);
+            stats.append("div").attr("class", "stat")
+                .html(`<div class="stat-value">${topCareer.name}</div><div class="stat-label">Top Career</div>`);
+        });
+
+        // Legends
+        const majorLegend = d3.select("#major-legend");
+        majorClusters.forEach(major => {
+            const item = majorLegend.append("div").attr("class", "legend-item");
+            item.append("div").attr("class", "swatch")
+                .style("background-color", majorColors[major.name]);
+            item.append("span").text(major.name);
+        });
+
+        const careerLegend = d3.select("#career-legend");
+        careerClusters.forEach(career => {
+            const item = careerLegend.append("div").attr("class", "legend-item");
+            item.append("div").attr("class", "swatch")
+                .style("background-color", careerColors[career.name]);
+            item.append("span").text(career.name);
+        });
+
+        // Mini Circos Class
+        class MiniCircosChart {
+            constructor(svg, options = {}) {
+                this.svg = svg;
+                this.options = {
+                    width: 400,
+                    height: 400,
+                    innerRadius: 0.32,
+                    outerRadius: 0.42,
+                    ...options
+                };
+                this.tooltip = d3.select("#tooltip");
+            }
+
+            render(majorData, careerData, matrix) {
+                const { width, height, innerRadius, outerRadius } = this.options;
+                const radius = Math.min(width, height) / 2;
+                const inner = radius * innerRadius;
+                const outer = radius * outerRadius;
+
+                this.svg.attr("viewBox", [-width/2, -height/2, width, height])
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+
+                const chordGroup = this.svg.append("g");
+                const arcGroup = this.svg.append("g");
+                const labelGroup = this.svg.append("g");
+
+                const majorTotal = d3.sum(majorData, d => d.count);
+                const careerTotal = d3.sum(careerData, d => d.count);
+
+                const gap = 0.15;
+                const majorArcLength = Math.PI - gap;
+                const careerArcLength = Math.PI - gap;
+
+                const groups = [];
+                let majorAngle = Math.PI + gap / 2;
+                let careerAngle = gap / 2;
+
+                majorData.forEach((d, i) => {
+                    const proportion = d.count / majorTotal;
+                    const arcLen = proportion * majorArcLength;
+                    groups.push({
+                        startAngle: majorAngle,
+                        endAngle: majorAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'major'
+                    });
+                    majorAngle += arcLen;
+                });
+
+                careerData.forEach((d, i) => {
+                    const proportion = d.count / careerTotal;
+                    const arcLen = proportion * careerArcLength;
+                    groups.push({
+                        startAngle: careerAngle,
+                        endAngle: careerAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'career'
+                    });
+                    careerAngle += arcLen;
+                });
+
+                // Draw arcs
+                groups.forEach((group, i) => {
+                    const arcPath = d3.arc()
+                        .innerRadius(inner)
+                        .outerRadius(outer)
+                        .startAngle(group.startAngle)
+                        .endAngle(group.endAngle);
+
+                    const color = group.side === 'major'
+                        ? majorColors[group.data.name]
+                        : careerColors[group.data.name];
+
+                    arcGroup.append("path")
+                        .attr("class", "arc path")
+                        .attr("d", arcPath)
+                        .style("fill", color);
+
+                    const midAngle = (group.startAngle + group.endAngle) / 2;
+                    const labelRadius = outer + 18;
+                    const x = Math.cos(midAngle - Math.PI / 2) * labelRadius;
+                    const y = Math.sin(midAngle - Math.PI / 2) * labelRadius;
+
+                    if (group.side === 'career') {
+                        labelGroup.append("text")
+                            .attr("class", "arc-label")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("text-anchor", "middle")
+                            .attr("dominant-baseline", "middle")
+                            .style("fill", color)
+                            .style("font-weight", 700)
+                            .text(group.data.name.split(" ")[0]);
+                    }
+                });
+
+                // Draw chords
+                const majorGroups = groups.filter(g => g.side === 'major');
+                const careerGroups = groups.filter(g => g.side === 'career');
+
+                const flowData = [];
+                matrix[0].forEach((flow, careerIdx) => {
+                    if (flow > 0) {
+                        flowData.push({
+                            majorIdx: 0,
+                            careerIdx: careerIdx,
+                            count: flow
+                        });
+                    }
+                });
+
+                const maxFlow = d3.max(flowData, d => d.count);
+
+                flowData.forEach((flow) => {
+                    const majorGroup = majorGroups[flow.majorIdx];
+                    const careerGroup = careerGroups[flow.careerIdx];
+
+                    const majorMid = (majorGroup.startAngle + majorGroup.endAngle) / 2;
+                    const careerMid = (careerGroup.startAngle + careerGroup.endAngle) / 2;
+
+                    const source = [
+                        Math.cos(majorMid - Math.PI / 2) * ((inner + outer) / 2),
+                        Math.sin(majorMid - Math.PI / 2) * ((inner + outer) / 2)
+                    ];
+
+                    const target = [
+                        Math.cos(careerMid - Math.PI / 2) * ((inner + outer) / 2),
+                        Math.sin(careerMid - Math.PI / 2) * ((inner + outer) / 2)
+                    ];
+
+                    const midX = (source[0] + target[0]) / 2;
+                    const midY = (source[1] + target[1]) / 2;
+
+                    const ribbonPath = `
+                        M ${source[0]},${source[1]}
+                        Q ${midX},${midY * 0.5} ${target[0]},${target[1]}
+                        L ${target[0]},${target[1]}
+                        Q ${midX},${midY * 0.5} ${source[0]},${source[1]}
+                        Z
+                    `;
+
+                    const careerColor = careerColors[careerGroup.data.name];
+                    const flowOpacity = 0.4 + (flow.count / maxFlow) * 0.4;
+
+                    chordGroup.append("path")
+                        .attr("class", "chord path")
+                        .attr("d", ribbonPath)
+                        .style("fill", careerColor)
+                        .style("fill-opacity", flowOpacity);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

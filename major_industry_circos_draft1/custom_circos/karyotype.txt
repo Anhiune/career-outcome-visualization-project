@@ -1,0 +1,14 @@
+chr - major_0 COMMUNICATION_&_MEDIA 0 160 cm_0
+chr - major_1 ARTS,_LANGUAGES_&_THEOLOGY 0 86 cm_1
+chr - major_2 SOCIAL_SCIENCES_&_HUMANITIES 0 271 cm_2
+chr - major_3 BUSINESS_&_MANAGEMENT 0 1570 cm_3
+chr - major_4 EDUCATION_&_SOCIAL_SERVICES 0 78 cm_4
+chr - major_5 NATURAL_&_HEALTH_SCIENCES 0 436 cm_5
+chr - major_6 ENGINEERING_&_TECHNOLOGY 0 462 cm_6
+chr - major_7 Unclassified 0 138 cm_7
+chr - career_0 Arts,_Media_&_Legal 0 37 cc_0
+chr - career_1 Business_&_Finance 0 771 cc_1
+chr - career_2 Education_&_Service 0 110 cc_2
+chr - career_3 Healthcare_&_Science 0 287 cc_3
+chr - career_4 Technology_&_Engineering 0 394 cc_4
+chr - career_5 Unclassified 0 1602 cc_5

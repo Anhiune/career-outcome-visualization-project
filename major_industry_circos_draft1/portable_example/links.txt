@@ -1,0 +1,14 @@
+major_4 0 55 industry_1 0 55 color=highlight_a4
+major_4 55 85 industry_2 0 30 color=highlight_a4
+major_4 85 120 industry_8 0 35 color=highlight_a4
+major_4 120 145 industry_9 0 25 color=highlight_a4
+major_4 145 165 industry_10 0 20 color=highlight_a4
+major_4 165 180 industry_3 0 15 color=highlight_a4
+major_2 0 30 industry_5 0 30 color=social_science_a4
+major_3 0 35 industry_5 30 65 color=engineering_a4
+major_0 0 35 industry_0 0 35 color=business_a4
+major_0 35 60 industry_7 0 25 color=business_a4
+major_1 0 30 industry_1 55 85 color=business_a4
+major_5 0 25 industry_8 35 60 color=social_science_a4
+major_6 0 20 industry_10 20 40 color=business_a4
+major_7 0 15 industry_6 0 15 color=engineering_a4

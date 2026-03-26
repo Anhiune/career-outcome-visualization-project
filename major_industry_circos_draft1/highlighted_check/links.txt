@@ -1,0 +1,11 @@
+major_3 0 51 industry_0 8 59 color=major_3_a5
+major_3 51 83 industry_1 43 75 color=major_3_a5
+major_3 83 95 industry_2 0 12 color=major_3_a5
+major_3 95 392 industry_3 18 315 color=major_3_a5
+major_3 392 417 industry_4 67 92 color=major_3_a5
+major_3 417 503 industry_5 35 121 color=major_3_a5
+major_3 503 626 industry_6 8 131 color=major_3_a5
+major_3 626 1204 industry_7 269 847 color=major_3_a5
+major_3 1204 1384 industry_8 32 212 color=major_3_a5
+major_3 1384 1519 industry_9 56 191 color=major_3_a5
+major_3 1519 1643 industry_10 24 148 color=major_3_a5

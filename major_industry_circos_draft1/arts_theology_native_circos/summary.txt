@@ -1,0 +1,24 @@
+Source CSV: C:\Users\hoang\Documents\project_test\data\career_outcomes_final.csv
+Filtered rows (visible ribbons from 'Arts & Theology' only): 51
+
+Major counts:
+- Catholic Studies: scaled=349, rows=30 (Arts & Theology; visible ribbons)
+- Music - Business: scaled=128, rows=11 (Arts & Theology; visible ribbons)
+- Music: scaled=35, rows=3 (Arts & Theology; visible ribbons)
+- Theology: scaled=35, rows=3 (Arts & Theology; visible ribbons)
+- Art History: scaled=23, rows=2 (Arts & Theology; visible ribbons)
+- Music - Performance: scaled=23, rows=2 (Arts & Theology; visible ribbons)
+- English: scaled=163, rows=0 (English & Writing; arc only)
+- English - Professional Writing: scaled=105, rows=0 (English & Writing; arc only)
+- Spanish Cultural/Literary St.: scaled=58, rows=0 (Languages; arc only)
+- French: scaled=35, rows=0 (Languages; arc only)
+- Spanish Linguistics/Lang. St.: scaled=35, rows=0 (Languages; arc only)
+- German: scaled=11, rows=0 (Languages; arc only)
+
+Career large-cluster counts:
+- Unclassified: scaled=471, rows=24
+- Business & Finance: scaled=196, rows=10
+- Healthcare & Science: scaled=235, rows=12
+- Technology & Engineering: scaled=39, rows=2
+- Education & Service: scaled=39, rows=2
+- Arts, Media & Legal: scaled=20, rows=1

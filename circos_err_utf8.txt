@@ -1,0 +1,127 @@
+﻿perl :  at C:/Users/hoa
+ng/Downloads/circos-0.6
+9-10/circos-0.69-10/bin
+/../lib/Circos/Error.pm
+ line 425.
+At line:1 char:1
++ perl C:\Users\hoang\D
+ownloads\circos-0.69-10
+\circos-0.69-10\bin\cir
+co ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ( at C:/Users/   
+ ho...or.pm line 42    
+5.:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+	Circos::Error::fatal_e
+rror("configuration", 
+"cannot_find_include", 
+"c:\\Users\\hoang\\Docu
+ments\\project_test\\ma
+jor_industry_circos_d".
+.., "Config::General 
+The file \"custom_circo
+s_v3/colors.conf\" 
+does "...) called at C:
+/Users/hoang/Downloads/
+circos-0.69-10/circos-0
+.69-10/bin/../lib/Circo
+s/Configuration.pm 
+line 825
+	Circos::Configuration:
+:loadconfiguration("c:\
+\Users\\hoang\\Document
+s\\project_test\\major_
+industry_circos_d"...) 
+called at C:/Users/hoan
+g/Downloads/circos-0.69
+-10/circos-0.69-10/bin/
+../lib/Circos.pm line 
+148
+	Circos::run("Circos", 
+"_cwd", "C:/Users/hoang
+/Documents/project_test
+", "_argv", "-conf c:\\
+Users\\hoang\\Documents
+\\project_test\\major_i
+ndustry_ci"..., 
+"configfile", "c:\\User
+s\\hoang\\Documents\\pr
+oject_test\\major_indus
+try_circos_d"...) 
+called at C:\Users\hoan
+g\Downloads\circos-0.69
+-10\circos-0.69-10\bin\
+circos line 536
+debuggroup summary 0.41s welcome to circos v0.69-10 25 August 2025 on Perl 5.042000
+debuggroup summary 0.41s current working directory C:/Users/hoang/Documents/project_test
+debuggroup summary 0.41s command C:\Users\hoang\Downloads\circos-0.69-10\circos-0.69-10\bin\circos -conf c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\circos.conf
+debuggroup summary 0.41s loading configuration from file c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\circos.conf
+debuggroup summary 0.41s found conf file c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\circos.conf
+
+  *** CIRCOS ERROR ***
+
+      cwd: C:/Users/hoang/Documents/project_test
+
+      command: C:\Users\hoang\Downloads\circos-0.69-10\circos-0.69-10\bin\circos
+      -conf
+      c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\circos.conf
+
+  CONFIGURATION FILE ERROR
+
+  Error parsing the configuration file. You used an <<include FILE>> directive,
+  but the FILE could not be found. This FILE is interpreted relative to the
+  configuration file in which the <<include>> directive is used. Circos lookd
+  for the file in these directories
+
+  c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\
+
+  c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3
+
+  c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3/etc
+
+  C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/etc
+
+  C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/../etc
+
+  C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/..
+
+  C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin
+
+  The Config::General module reported the error
+
+  Config::General The file "custom_circos_v3/colors.conf" does not exist within
+  ConfigPath:
+  c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3\.c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3.c:\Users\hoang\Documents\project_test\major_industry_circos_draft1\custom_circos_v3/etc.C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/etc.C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/../etc.C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/...C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin!
+  at
+  C:/Users/hoang/Downloads/circos-0.69-10/circos-0.69-10/bin/../lib/Circos/Configuration.pm
+  line 819.
+
+  If you are having trouble debugging this error, first read the best practices
+  tutorial for helpful tips that address many common problems
+
+      http://www.circos.ca/documentation/tutorials/reference/best_practices
+
+  The debugging facility is helpful to figure out what's happening under the
+  hood
+
+      http://www.circos.ca/documentation/tutorials/configuration/debugging
+
+  If you're still stumped, get support in the Circos Google Group.
+
+      http://groups.google.com/group/circos-data-visualization
+
+  Please include this error, all your configuration, data files and the version
+  of Circos you're running (circos -v). Do not email me directly -- please use
+  the group.
+
+  Stack trace:

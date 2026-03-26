@@ -1,0 +1,12 @@
+chr - major_0 ENGINEERING_&_TECHNOLOGY 0 463 cm_0
+chr - career_0 Construction_Engineering_and_Real_Estate 0 54 cc_0
+chr - career_1 Education_and_Academia 0 13 cc_1
+chr - career_2 Energy_and_Utilities 0 10 cc_2
+chr - career_3 Financial_Services_and_Insurance 0 7 cc_3
+chr - career_4 Government_and_Public_Service 0 18 cc_4
+chr - career_5 Healthcare_and_Medical 0 42 cc_5
+chr - career_6 Manufacturing_and_Industrial 0 84 cc_6
+chr - career_7 Other 0 152 cc_7
+chr - career_8 Professional_Services_and_Consulting 0 15 cc_8
+chr - career_9 Retail_and_Consumer_Products 0 10 cc_9
+chr - career_10 Technology_and_Software 0 58 cc_10

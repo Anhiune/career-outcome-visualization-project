@@ -1,0 +1,275 @@
+Major (Small Cluster),Industry (Job Function),Count
+Finance & Accounting,Finance & Accounting,284
+Finance & Accounting,Other,196
+Engineering Disciplines,Engineering,189
+Biological Sciences,Other,132
+Marketing & Communication,Other,122
+General Business,Other,116
+Social Sciences,Other,112
+Engineering Disciplines,Other,106
+Marketing & Communication,Sales & Business Development,68
+Biological Sciences,Healthcare & Clinical,63
+Health & Wellness,Other,62
+Computer Science & IT,Software & IT,61
+Humanities & Liberal Arts,Other,59
+Marketing & Communication,Marketing & Communications,58
+General Business,Sales & Business Development,53
+Operations & Analytics,Operations & Supply Chain,44
+Operations & Analytics,Other,42
+Physical Sciences,Other,41
+Computer Science & IT,Other,40
+Specialized Business,Other,40
+Finance & Accounting,Sales & Business Development,31
+Economics,Other,30
+Teacher Education,Education & Teaching,29
+Communication Studies,Other,28
+Economics,Finance & Accounting,26
+Social Sciences,Healthcare & Clinical,26
+General Business,Finance & Accounting,25
+Journalism & Media,Marketing & Communications,23
+Marketing & Communication,Consulting & Advisory,23
+Specialized Business,Finance & Accounting,23
+Finance & Accounting,Consulting & Advisory,22
+Journalism & Media,Other,21
+Specialized Business,Human Resources,21
+Teacher Education,Other,20
+Biological Sciences,Research & Science,19
+Engineering Disciplines,Software & IT,19
+Marketing & Communication,Finance & Accounting,19
+Biological Sciences,Engineering,18
+Health & Wellness,Healthcare & Clinical,18
+Arts & Theology,Other,17
+General Business,Management & Leadership,17
+Marketing & Communication,Operations & Supply Chain,16
+Communication Studies,Marketing & Communications,15
+English & Writing,Other,15
+Specialized Business,Sales & Business Development,15
+Marketing & Communication,Management & Leadership,14
+Communication Studies,Sales & Business Development,13
+Finance & Accounting,Software & IT,13
+General Business,Consulting & Advisory,13
+General Business,Marketing & Communications,13
+General Business,Operations & Supply Chain,13
+Social Sciences,Government & Public Service,13
+Social Sciences,Management & Leadership,13
+Biological Sciences,Government & Public Service,12
+Finance & Accounting,Operations & Supply Chain,12
+Marketing & Communication,Human Resources,12
+Operations & Analytics,Sales & Business Development,12
+Social Sciences,Sales & Business Development,12
+Social Work,Other,12
+Humanities & Liberal Arts,Sales & Business Development,11
+Creative Writing,Other,10
+General Business,Healthcare & Clinical,10
+Operations & Analytics,Finance & Accounting,10
+Social Sciences,Education & Teaching,10
+Social Work,Healthcare & Clinical,10
+General Business,Human Resources,9
+Marketing & Communication,Software & IT,9
+Biological Sciences,Sales & Business Development,8
+Environmental Sciences,Other,8
+Finance & Accounting,Management & Leadership,8
+International Studies,Other,8
+Operations & Analytics,Consulting & Advisory,8
+Operations & Analytics,Software & IT,8
+Specialized Business,Operations & Supply Chain,8
+Economics,Sales & Business Development,7
+Engineering Disciplines,Operations & Supply Chain,7
+Environmental Sciences,Research & Science,7
+Finance & Accounting,Healthcare & Clinical,7
+General Business,Education & Teaching,7
+Physical Sciences,Finance & Accounting,7
+Physical Sciences,Research & Science,7
+Specialized Business,Engineering,7
+Economics,Operations & Supply Chain,6
+Finance & Accounting,Education & Teaching,6
+Finance & Accounting,Engineering,6
+Journalism & Media,Sales & Business Development,6
+Languages,Other,6
+Operations & Analytics,Management & Leadership,6
+Social Sciences,Engineering,6
+Social Sciences,Legal,6
+Specialized Business,Consulting & Advisory,6
+Arts & Theology,Education & Teaching,5
+Arts & Theology,Government & Public Service,5
+Communication Studies,Consulting & Advisory,5
+Economics,Government & Public Service,5
+Economics,Healthcare & Clinical,5
+Economics,Software & IT,5
+Engineering Disciplines,Government & Public Service,5
+Engineering Disciplines,Management & Leadership,5
+Engineering Disciplines,Research & Science,5
+Environmental Sciences,Engineering,5
+General Business,Government & Public Service,5
+Health & Wellness,Sales & Business Development,5
+Marketing & Communication,Engineering,5
+Physical Sciences,Education & Teaching,5
+Specialized Business,Management & Leadership,5
+Arts & Theology,Administrative & Support,4
+Biological Sciences,Consulting & Advisory,4
+Creative Writing,Marketing & Communications,4
+Economics,Consulting & Advisory,4
+General Business,Software & IT,4
+Health & Wellness,Design & Creative,4
+Humanities & Liberal Arts,Education & Teaching,4
+Journalism & Media,Management & Leadership,4
+Physical Sciences,Engineering,4
+Physical Sciences,Sales & Business Development,4
+Social Sciences,Administrative & Support,4
+Social Sciences,Finance & Accounting,4
+Social Sciences,Human Resources,4
+Social Sciences,Operations & Supply Chain,4
+Specialized Business,Government & Public Service,4
+Arts & Theology,Marketing & Communications,3
+Arts & Theology,Sales & Business Development,3
+Biological Sciences,Education & Teaching,3
+Biological Sciences,Finance & Accounting,3
+Biological Sciences,Human Resources,3
+Biological Sciences,Software & IT,3
+Communication Studies,Operations & Supply Chain,3
+Computer Science & IT,Consulting & Advisory,3
+Computer Science & IT,Government & Public Service,3
+Economics,Data & Analytics,3
+Engineering Disciplines,Education & Teaching,3
+Engineering Disciplines,Sales & Business Development,3
+English & Writing,Marketing & Communications,3
+Environmental Sciences,Management & Leadership,3
+Finance & Accounting,Administrative & Support,3
+Finance & Accounting,Data & Analytics,3
+Finance & Accounting,Human Resources,3
+Finance & Accounting,Marketing & Communications,3
+General Business,Construction & Trades,3
+Humanities & Liberal Arts,Engineering,3
+Humanities & Liberal Arts,Government & Public Service,3
+Languages,Healthcare & Clinical,3
+Marketing & Communication,Education & Teaching,3
+Marketing & Communication,Healthcare & Clinical,3
+Operations & Analytics,Data & Analytics,3
+Physical Sciences,Operations & Supply Chain,3
+Social Sciences,Marketing & Communications,3
+Arts & Theology,Consulting & Advisory,2
+Arts & Theology,Management & Leadership,2
+Arts & Theology,Operations & Supply Chain,2
+Arts & Theology,Software & IT,2
+Biological Sciences,Construction & Trades,2
+Biological Sciences,Legal,2
+Biological Sciences,Management & Leadership,2
+Communication Studies,Education & Teaching,2
+Communication Studies,Finance & Accounting,2
+Computer Science & IT,Engineering,2
+Computer Science & IT,Finance & Accounting,2
+Creative Writing,Legal,2
+Engineering Disciplines,Consulting & Advisory,2
+Engineering Disciplines,Design & Creative,2
+English & Writing,Management & Leadership,2
+English & Writing,Sales & Business Development,2
+Environmental Sciences,Education & Teaching,2
+Environmental Sciences,Finance & Accounting,2
+Finance & Accounting,Construction & Trades,2
+Finance & Accounting,Research & Science,2
+Health & Wellness,Education & Teaching,2
+Health & Wellness,Engineering,2
+Humanities & Liberal Arts,Healthcare & Clinical,2
+Humanities & Liberal Arts,Management & Leadership,2
+International Studies,Education & Teaching,2
+Journalism & Media,Education & Teaching,2
+Journalism & Media,Engineering,2
+Journalism & Media,Government & Public Service,2
+Marketing & Communication,Research & Science,2
+Operations & Analytics,Administrative & Support,2
+Operations & Analytics,Education & Teaching,2
+Operations & Analytics,Government & Public Service,2
+Operations & Analytics,Healthcare & Clinical,2
+Operations & Analytics,Research & Science,2
+Physical Sciences,Consulting & Advisory,2
+Physical Sciences,Management & Leadership,2
+Physical Sciences,Software & IT,2
+Social Sciences,Consulting & Advisory,2
+Social Work,Government & Public Service,2
+Specialized Business,Education & Teaching,2
+Specialized Business,Healthcare & Clinical,2
+Specialized Business,Marketing & Communications,2
+Arts & Theology,Design & Creative,1
+Arts & Theology,Finance & Accounting,1
+Arts & Theology,Healthcare & Clinical,1
+Arts & Theology,Human Resources,1
+Arts & Theology,Legal,1
+Arts & Theology,Research & Science,1
+Biological Sciences,Administrative & Support,1
+Biological Sciences,Marketing & Communications,1
+Biological Sciences,Operations & Supply Chain,1
+Communication Studies,Administrative & Support,1
+Communication Studies,Engineering,1
+Communication Studies,Government & Public Service,1
+Communication Studies,Healthcare & Clinical,1
+Communication Studies,Legal,1
+Communication Studies,Management & Leadership,1
+Communication Studies,Nonprofit & Social Services,1
+Communication Studies,Research & Science,1
+Computer Science & IT,Data & Analytics,1
+Computer Science & IT,Healthcare & Clinical,1
+Computer Science & IT,Management & Leadership,1
+Computer Science & IT,Operations & Supply Chain,1
+Computer Science & IT,Sales & Business Development,1
+Creative Writing,Consulting & Advisory,1
+Creative Writing,Engineering,1
+Creative Writing,Finance & Accounting,1
+Creative Writing,Healthcare & Clinical,1
+Creative Writing,Sales & Business Development,1
+Economics,Human Resources,1
+Economics,Management & Leadership,1
+Economics,Marketing & Communications,1
+Engineering Disciplines,Finance & Accounting,1
+English & Writing,Software & IT,1
+Environmental Sciences,Construction & Trades,1
+Environmental Sciences,Nonprofit & Social Services,1
+Environmental Sciences,Operations & Supply Chain,1
+Finance & Accounting,Legal,1
+Finance & Accounting,Real Estate,1
+General Business,Administrative & Support,1
+General Business,Engineering,1
+Health & Wellness,Administrative & Support,1
+Health & Wellness,Consulting & Advisory,1
+Health & Wellness,Government & Public Service,1
+Health & Wellness,Marketing & Communications,1
+Health & Wellness,Nonprofit & Social Services,1
+Health & Wellness,Research & Science,1
+Health & Wellness,Software & IT,1
+Humanities & Liberal Arts,Legal,1
+Humanities & Liberal Arts,Marketing & Communications,1
+Humanities & Liberal Arts,Nonprofit & Social Services,1
+Humanities & Liberal Arts,Software & IT,1
+International Studies,Consulting & Advisory,1
+International Studies,Finance & Accounting,1
+International Studies,Government & Public Service,1
+International Studies,Legal,1
+International Studies,Nonprofit & Social Services,1
+International Studies,Sales & Business Development,1
+International Studies,Software & IT,1
+Journalism & Media,Consulting & Advisory,1
+Journalism & Media,Design & Creative,1
+Journalism & Media,Finance & Accounting,1
+Languages,Consulting & Advisory,1
+Languages,Marketing & Communications,1
+Languages,Operations & Supply Chain,1
+Marketing & Communication,Data & Analytics,1
+Marketing & Communication,Government & Public Service,1
+Marketing & Communication,Real Estate,1
+Operations & Analytics,Construction & Trades,1
+Operations & Analytics,Design & Creative,1
+Operations & Analytics,Engineering,1
+Physical Sciences,Data & Analytics,1
+Physical Sciences,Government & Public Service,1
+Social Sciences,Nonprofit & Social Services,1
+Social Sciences,Real Estate,1
+Social Sciences,Research & Science,1
+Social Sciences,Software & IT,1
+Social Work,Construction & Trades,1
+Social Work,Education & Teaching,1
+Social Work,Nonprofit & Social Services,1
+Social Work,Software & IT,1
+Specialized Business,Administrative & Support,1
+Specialized Business,Legal,1
+Specialized Business,Real Estate,1
+Specialized Business,Software & IT,1
+Teacher Education,Healthcare & Clinical,1

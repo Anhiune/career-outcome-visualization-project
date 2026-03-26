@@ -1,0 +1,16 @@
+chr - ind_0 Software_and_IT 0 61 cm_0
+chr - job_0 Software_Engineer 0 18 cc_0
+chr - job_1 Software_Developer 0 7 cc_1
+chr - job_2 Application_Engineer 0 5 cc_2
+chr - job_3 Software_Engineering_Associate 0 5 cc_3
+chr - job_4 Delivery_Driver 0 4 cc_4
+chr - job_5 Analyst 0 4 cc_5
+chr - job_6 Data_Analyst 0 4 cc_6
+chr - job_7 Developer 0 2 cc_7
+chr - job_8 IT_Analyst_Programmer 0 2 cc_8
+chr - job_9 Junior_Software_Developer 0 2 cc_9
+chr - job_10 Compliance_Services_Associate 0 2 cc_10
+chr - job_11 TDP_Associate 0 2 cc_11
+chr - job_12 Business_Systems_Analyst 0 2 cc_12
+chr - job_13 Security_Analyst 0 1 cc_13
+chr - job_14 Shopper 0 1 cc_14

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCIAL SCIENCES & HUMANITIES - True Circos</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #f5f1e7 0%, #e9e2d1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+            padding: 40px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1e1f1b;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(30, 31, 27, 0.7);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        #circos {
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.95) 0%, transparent 70%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        svg { max-width: 100%; height: auto; }
+
+        .ribbon { fill-opacity: 0.65; stroke: none; }
+        .ribbon:hover { fill-opacity: 0.9; }
+        .arc-path { stroke: white; stroke-width: 2; }
+        .arc-label { font-size: 10px; font-weight: 600; pointer-events: none; }
+
+        .tooltip {
+            position: fixed;
+            padding: 10px 14px;
+            background: rgba(30, 31, 27, 0.92);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .legend-title { font-weight: 600; margin-bottom: 12px; color: #1e1f1b; font-size: 14px; }
+        .legend-section { margin-bottom: 15px; }
+        .legend-section-title { font-size: 12px; font-weight: 700; color: rgba(30, 31, 27, 0.6); margin-bottom: 8px; }
+        .legend-item {
+            display: inline-block;
+            margin-right: 16px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+        .legend-color { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+
+        .stats {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9f7f2;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SOCIAL SCIENCES & HUMANITIES</h1>
+        <div class="subtitle">Career Pathways - True Circos Diagram</div>
+
+        <div id="circos"></div>
+        <div class="tooltip"></div>
+
+        <div class="legend">
+            <div class="legend-title">Career Destinations (Right Side)</div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #4477AA;"></span>Business & Finance
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #66CCBB;"></span>Technology & Engineering
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #99DDFF;"></span>Healthcare & Science
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #228833;"></span>Education & Service
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #AA3377;"></span>Arts, Media & Legal
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #BBBBBB;"></span>Unclassified
+            </div>
+        </div>
+
+        <div class="stats">
+            <strong>Distribution:</strong><br>
+            Unclassified: 133 (49.1%)<br>
+            Business & Finance: 58 (21.4%)<br>
+            Healthcare & Science: 32 (11.8%)<br>
+            Education & Service: 22 (8.1%)<br>
+            Technology & Engineering: 18 (6.6%)<br>
+            Arts, Media & Legal: 8 (3.0%)<br>
+        </div>
+    </div>
+
+    <script>
+    const matrix = [[0, 0, 0, 12, 3, 6, 4, 1, 28], [0, 0, 0, 3, 1, 2, 1, 0, 8], [0, 0, 0, 41, 12, 23, 15, 5, 95], [12, 3, 41, 0, 0, 0, 0, 0, 0], [3, 1, 12, 0, 0, 0, 0, 0, 0], [6, 2, 23, 0, 0, 0, 0, 0, 0], [4, 1, 15, 0, 0, 0, 0, 0, 0], [1, 0, 5, 0, 0, 0, 0, 0, 0], [28, 8, 95, 0, 0, 0, 0, 0, 0]];
+    const nodes = ["Humanities & Liberal Arts", "International Studies", "Social Sciences", "Business & Finance", "Technology & Engineering", "Healthcare & Science", "Education & Service", "Arts, Media & Legal", "Unclassified"];
+    const colors = {"Humanities & Liberal Arts": "#999999", "International Studies": "#999999", "Social Sciences": "#999999", "Business & Finance": "#4477AA", "Technology & Engineering": "#66CCBB", "Healthcare & Science": "#99DDFF", "Education & Service": "#228833", "Arts, Media & Legal": "#AA3377", "Unclassified": "#BBBBBB"};
+
+    const width = 900;
+    const height = 900;
+    const radius = Math.min(width, height) / 2 - 100;
+
+    const svg = d3.select('#circos')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    const g = svg.append('g')
+        .attr('transform', `translate(${width/2},${height/2})`);
+
+    // D3 chord layout
+    const chord = d3.chord()
+        .padAngle(0.05)
+        .sortSubgroups(d3.descending);
+
+    const chords = chord(matrix);
+    const ribbon = d3.ribbon().source(d => d.source).target(d => d.target);
+    const arc = d3.arc().innerRadius(radius).outerRadius(radius + 35);
+
+    // Draw ribbons
+    g.append('g')
+        .attr('fill-opacity', 0.65)
+        .selectAll('path')
+        .data(chords)
+        .join('path')
+        .attr('class', 'ribbon')
+        .attr('d', ribbon)
+        .attr('fill', d => colors[nodes[d.source.index]])
+        .on('mouseover', function(event, d) {
+            d3.select(this).attr('fill-opacity', 0.9);
+            const src = nodes[d.source.index];
+            const tgt = nodes[d.target.index];
+            const val = matrix[d.source.index][d.target.index];
+            showTooltip(`${src} -> ${tgt}: ${val}`);
+        })
+        .on('mouseout', function() {
+            d3.select(this).attr('fill-opacity', 0.65);
+            hideTooltip();
+        });
+
+    // Draw arcs
+    g.append('g')
+        .selectAll('g')
+        .data(chords.groups)
+        .join('g')
+        .append('path')
+        .attr('class', 'arc-path')
+        .attr('d', arc)
+        .attr('fill', d => colors[nodes[d.index]])
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2);
+
+    // Add labels
+    g.append('g')
+        .selectAll('text')
+        .data(chords.groups)
+        .join('text')
+        .attr('class', 'arc-label')
+        .attr('x', d => {
+            const angle = (d.startAngle + d.endAngle) / 2;
+            return (radius + 50) * Math.cos(angle - Math.PI / 2);
+        })
+        .attr('y', d => {
+            const angle = (d.startAngle + d.endAngle) / 2;
+            return (radius + 50) * Math.sin(angle - Math.PI / 2);
+        })
+        .attr('text-anchor', 'middle')
+        .text(d => nodes[d.index])
+        .attr('font-size', '11px')
+        .attr('font-weight', '600');
+
+    function showTooltip(text) {
+        const tooltip = document.querySelector('.tooltip');
+        tooltip.textContent = text;
+        tooltip.style.display = 'block';
+        document.addEventListener('mousemove', moveTooltip);
+    }
+
+    function hideTooltip() {
+        document.querySelector('.tooltip').style.display = 'none';
+    }
+
+    function moveTooltip(e) {
+        const tooltip = document.querySelector('.tooltip');
+        tooltip.style.left = (e.pageX + 10) + 'px';
+        tooltip.style.top = (e.pageY + 10) + 'px';
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major to Career Pathways - With Flow Filtering</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --major-business: #332288;
+            --major-engineering: #44AA99;
+            --major-natural: #88CCEE;
+            --major-social: #DDCC77;
+            --major-comm: #CC6677;
+            --major-arts: #882255;
+            --major-education: #117733;
+            --major-unclassified: #999999;
+
+            --career-business: #4477AA;
+            --career-tech: #66CCBB;
+            --career-health: #99DDFF;
+            --career-education: #228833;
+            --career-arts: #AA3377;
+            --career-unclassified: #BBBBBB;
+
+            --ink: #1e1f1b;
+            --paper: #f2efe8;
+            --panel: rgba(255, 252, 246, 0.94);
+            --line: rgba(30, 31, 27, 0.12);
+            --shadow: 0 30px 80px rgba(30, 31, 27, 0.18);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 0% 0%, rgba(51, 34, 136, 0.1), transparent 60%),
+                radial-gradient(1000px 500px at 100% 100%, rgba(17, 119, 51, 0.08), transparent 65%),
+                linear-gradient(145deg, #f5f1e7 0%, #e9e2d1 100%);
+            min-height: 100vh;
+            padding: clamp(1rem, 2.5vw, 2rem);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+        }
+
+        .header h1 {
+            font-family: "Fraunces", serif;
+            font-size: clamp(1.5rem, 2vw, 2.2rem);
+            margin-bottom: 0.3rem;
+        }
+
+        .header p {
+            font-size: 0.88rem;
+            color: rgba(30, 31, 27, 0.7);
+            max-width: 900px;
+            line-height: 1.5;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.4);
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 0.55rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.6);
+            white-space: nowrap;
+        }
+
+        .tab:hover { background: rgba(30, 31, 27, 0.05); }
+        .tab.active {
+            background: var(--ink);
+            color: var(--paper);
+            border-color: var(--ink);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 600px;
+        }
+
+        .controls-panel {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(30, 31, 27, 0.6);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--ink);
+        }
+
+        .control-value {
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        #circos-chart { width: 100%; height: 100%; }
+
+        .chord path {
+            fill-opacity: 0.65;
+            stroke-width: 0.5px;
+            transition: fill-opacity 0.2s ease, stroke-width 0.2s ease;
+        }
+        .chord path:hover { fill-opacity: 0.9; }
+        .chord path.dimmed { fill-opacity: 0.06; }
+
+        .arc path {
+            stroke: white;
+            stroke-width: 1.5px;
+            transition: opacity 0.2s ease;
+        }
+        .arc path.dimmed { opacity: 0.25; }
+
+        .arc-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        .arc-label.dimmed { opacity: 0.15; }
+
+        .tooltip {
+            position: fixed;
+            padding: 0.8rem 1rem;
+            background: rgba(30, 31, 27, 0.96);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            max-width: 320px;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+        .tooltip.visible { opacity: 1; }
+        .tooltip-title { font-weight: 700; margin-bottom: 0.25rem; }
+        .tooltip-stat { font-size: 0.78rem; opacity: 0.9; }
+
+        .filter-info {
+            font-size: 0.78rem;
+            color: rgba(30, 31, 27, 0.6);
+            margin-top: 0.5rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 3px solid var(--ink);
+            border-radius: 4px;
+        }
+
+        .legend-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+        }
+
+        .legend-section h3 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(30, 31, 27, 0.55);
+            margin-bottom: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.78rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            border: 1px solid rgba(30, 31, 27, 0.1);
+        }
+
+        .legend-label { flex: 1; }
+        .legend-count {
+            font-size: 0.68rem;
+            color: rgba(30, 31, 27, 0.6);
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .controls-panel { grid-template-columns: 1fr; }
+            .legend-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Major to Career Pathways - With Filtering</h1>
+            <p>Explore how each major cluster connects to careers. Use the filters below to focus on significant flows.
+               Adjust opacity and minimum flow threshold to see patterns more clearly.</p>
+        </div>
+
+        <div class="tabs" id="cluster-tabs">
+            <!-- Tabs generated by JS -->
+        </div>
+
+        <div class="content">
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label for="opacity-slider">Chord Opacity</label>
+                    <input type="range" id="opacity-slider" min="10" max="100" value="65">
+                    <div class="control-value"><span id="opacity-value">65</span>%</div>
+                </div>
+
+                <div class="control-group">
+                    <label for="threshold-slider">Min. Flow (students)</label>
+                    <input type="range" id="threshold-slider" min="0" max="100" value="0">
+                    <div class="filter-info">
+                        Showing flows >= <span id="threshold-value">0</span> students
+                        (<span id="flow-count">6</span> connections visible)
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Active Cluster</label>
+                    <div class="control-value" id="active-cluster-name">--</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <svg id="circos-chart"></svg>
+            </div>
+
+            <div class="legend-container" id="legend-container">
+                <!-- Legend generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // DATA
+        const majorColors = {
+            "BUSINESS & MANAGEMENT": "#332288",
+            "ENGINEERING & TECHNOLOGY": "#44AA99",
+            "NATURAL & HEALTH SCIENCES": "#88CCEE",
+            "SOCIAL SCIENCES & HUMANITIES": "#DDCC77",
+            "COMMUNICATION & MEDIA": "#CC6677",
+            "ARTS, LANGUAGES & THEOLOGY": "#882255",
+            "EDUCATION & SOCIAL SERVICES": "#117733",
+            "Unclassified": "#999999"
+        };
+
+        const careerColors = {
+            "Business & Finance": "#4477AA",
+            "Technology & Engineering": "#66CCBB",
+            "Healthcare & Science": "#99DDFF",
+            "Education & Service": "#228833",
+            "Arts, Media & Legal": "#AA3377",
+            "Unclassified": "#BBBBBB"
+        };
+
+        const majorClusters = [
+            { name: "BUSINESS & MANAGEMENT", count: 1570 },
+            { name: "ENGINEERING & TECHNOLOGY", count: 462 },
+            { name: "NATURAL & HEALTH SCIENCES", count: 436 },
+            { name: "SOCIAL SCIENCES & HUMANITIES", count: 271 },
+            { name: "COMMUNICATION & MEDIA", count: 160 },
+            { name: "ARTS, LANGUAGES & THEOLOGY", count: 86 },
+            { name: "EDUCATION & SOCIAL SERVICES", count: 78 },
+            { name: "Unclassified", count: 138 }
+        ];
+
+        const careerClusters = [
+            { name: "Business & Finance", count: 782 },
+            { name: "Technology & Engineering", count: 375 },
+            { name: "Healthcare & Science", count: 274 },
+            { name: "Education & Service", count: 75 },
+            { name: "Arts, Media & Legal", count: 33 },
+            { name: "Unclassified", count: 1662 }
+        ];
+
+        const flowMatrix = [
+            [480, 45, 35, 18, 8, 984],
+            [65, 245, 28, 6, 3, 115],
+            [48, 52, 165, 12, 4, 155],
+            [58, 18, 32, 22, 8, 133],
+            [38, 12, 6, 5, 6, 93],
+            [28, 4, 5, 5, 4, 40],
+            [12, 3, 8, 38, 2, 15],
+            [42, 15, 8, 4, 2, 67]
+        ];
+
+        let currentMajorIndex = 0;
+        let currentThreshold = 0;
+        let currentOpacity = 0.65;
+
+        function initTabs() {
+            const tabsContainer = d3.select("#cluster-tabs");
+            majorClusters.forEach((major, idx) => {
+                tabsContainer.append("div")
+                    .attr("class", `tab ${idx === 0 ? "active" : ""}`)
+                    .attr("data-index", idx)
+                    .text(major.name)
+                    .on("click", function() {
+                        d3.selectAll(".tab").classed("active", false);
+                        d3.select(this).classed("active", true);
+                        currentMajorIndex = +d3.select(this).attr("data-index");
+                        updateVisualization();
+                    });
+            });
+        }
+
+        function updateVisualization() {
+            const majorCluster = majorClusters[currentMajorIndex];
+            const flows = flowMatrix[currentMajorIndex];
+
+            new CircosChart("#circos-chart").render(
+                [majorCluster],
+                careerClusters,
+                [flows],
+                currentThreshold,
+                currentOpacity
+            );
+
+            updateLegend([majorCluster], careerClusters, flows, currentThreshold);
+            d3.select("#active-cluster-name").text(majorCluster.name);
+        }
+
+        function updateLegend(majorData, careerData, flows, threshold) {
+            const legendContainer = d3.select("#legend-container");
+            legendContainer.selectAll("*").remove();
+
+            const majorSection = legendContainer.append("div").attr("class", "legend-section");
+            majorSection.append("h3").text("Major Cluster");
+            const majorLegend = majorSection.append("div");
+            majorData.forEach(major => {
+                const item = majorLegend.append("div").attr("class", "legend-item");
+                item.append("div")
+                    .attr("class", "swatch")
+                    .style("background-color", majorColors[major.name]);
+                item.append("span").attr("class", "legend-label").text(major.name);
+                item.append("span").attr("class", "legend-count").text(major.count);
+            });
+
+            const careerSection = legendContainer.append("div").attr("class", "legend-section");
+            careerSection.append("h3").text("Career Destinations");
+            const careerLegend = careerSection.append("div");
+            careerData.forEach((career, idx) => {
+                const count = flows[idx];
+                const opacity = count >= threshold ? 1 : 0.3;
+                const item = careerLegend.append("div").attr("class", "legend-item");
+                item.style("opacity", opacity);
+                item.append("div")
+                    .attr("class", "swatch")
+                    .style("background-color", careerColors[career.name]);
+                item.append("span").attr("class", "legend-label").text(career.name);
+                item.append("span").attr("class", "legend-count").text(count);
+            });
+
+            const visibleFlows = flows.filter(f => f >= threshold).length;
+            d3.select("#flow-count").text(visibleFlows);
+        }
+
+        // Setup filter controls
+        d3.select("#threshold-slider").on("input", function() {
+            currentThreshold = +this.value;
+            d3.select("#threshold-value").text(currentThreshold);
+            updateVisualization();
+        });
+
+        d3.select("#opacity-slider").on("input", function() {
+            currentOpacity = +this.value / 100;
+            d3.select("#opacity-value").text(this.value);
+            updateVisualization();
+        });
+
+        class CircosChart {
+            constructor(container, options = {}) {
+                this.container = d3.select(container);
+                this.options = {
+                    width: 900,
+                    height: 900,
+                    innerRadius: 0.35,
+                    outerRadius: 0.43,
+                    ...options
+                };
+                this.tooltip = d3.select("#tooltip");
+            }
+
+            render(majorData, careerData, matrix, threshold, opacity) {
+                const { width, height, innerRadius, outerRadius } = this.options;
+                const radius = Math.min(width, height) / 2;
+                const inner = radius * innerRadius;
+                const outer = radius * outerRadius;
+
+                const svg = this.container
+                    .attr("viewBox", [-width/2, -height/2, width, height])
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+                svg.selectAll("*").remove();
+
+                const chordGroup = svg.append("g").attr("class", "chords");
+                const arcGroup = svg.append("g").attr("class", "arcs");
+                const labelGroup = svg.append("g").attr("class", "labels");
+
+                const majorTotal = d3.sum(majorData, d => d.count);
+                const careerTotal = d3.sum(careerData, d => d.count);
+
+                const gap = 0.15;
+                const majorArcLength = Math.PI - gap;
+                const careerArcLength = Math.PI - gap;
+
+                const groups = [];
+                let majorAngle = Math.PI + gap / 2;
+                let careerAngle = gap / 2;
+
+                majorData.forEach((d, i) => {
+                    const proportion = d.count / majorTotal;
+                    const arcLen = proportion * majorArcLength;
+                    groups.push({
+                        index: i,
+                        startAngle: majorAngle,
+                        endAngle: majorAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'major'
+                    });
+                    majorAngle += arcLen;
+                });
+
+                careerData.forEach((d, i) => {
+                    const proportion = d.count / careerTotal;
+                    const arcLen = proportion * careerArcLength;
+                    groups.push({
+                        index: i + majorData.length,
+                        startAngle: careerAngle,
+                        endAngle: careerAngle + arcLen,
+                        value: d.count,
+                        data: d,
+                        side: 'career'
+                    });
+                    careerAngle += arcLen;
+                });
+
+                // Draw arcs
+                groups.forEach((group, i) => {
+                    const arcPath = d3.arc()
+                        .innerRadius(inner)
+                        .outerRadius(outer)
+                        .startAngle(group.startAngle)
+                        .endAngle(group.endAngle);
+
+                    const color = group.side === 'major'
+                        ? majorColors[group.data.name]
+                        : careerColors[group.data.name];
+
+                    arcGroup.append("path")
+                        .attr("class", "arc path")
+                        .attr("d", arcPath)
+                        .style("fill", color);
+
+                    const midAngle = (group.startAngle + group.endAngle) / 2;
+                    const labelRadius = outer + 30;
+                    const x = Math.cos(midAngle - Math.PI / 2) * labelRadius;
+                    const y = Math.sin(midAngle - Math.PI / 2) * labelRadius;
+
+                    labelGroup.append("text")
+                        .attr("class", "arc-label")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("text-anchor", "middle")
+                        .attr("dominant-baseline", "middle")
+                        .style("fill", color)
+                        .style("font-weight", 700)
+                        .text(group.data.name);
+                });
+
+                // Draw chords with filtering
+                const majorGroups = groups.filter(g => g.side === 'major');
+                const careerGroups = groups.filter(g => g.side === 'career');
+
+                const flowData = [];
+                matrix[0].forEach((flow, careerIdx) => {
+                    if (flow >= threshold) {
+                        flowData.push({
+                            majorIdx: 0,
+                            careerIdx: careerIdx,
+                            count: flow
+                        });
+                    }
+                });
+
+                const maxFlow = d3.max(flowData, d => d.count) || 1;
+
+                flowData.forEach((flow) => {
+                    const majorGroup = majorGroups[flow.majorIdx];
+                    const careerGroup = careerGroups[flow.careerIdx];
+
+                    const majorMid = (majorGroup.startAngle + majorGroup.endAngle) / 2;
+                    const careerMid = (careerGroup.startAngle + careerGroup.endAngle) / 2;
+
+                    const majorRadius = (inner + outer) / 2;
+                    const careerRadius = (inner + outer) / 2;
+
+                    const source = [
+                        Math.cos(majorMid - Math.PI / 2) * majorRadius,
+                        Math.sin(majorMid - Math.PI / 2) * majorRadius
+                    ];
+
+                    const target = [
+                        Math.cos(careerMid - Math.PI / 2) * careerRadius,
+                        Math.sin(careerMid - Math.PI / 2) * careerRadius
+                    ];
+
+                    const midX = (source[0] + target[0]) / 2;
+                    const midY = (source[1] + target[1]) / 2;
+
+                    const ribbonPath = `
+                        M ${source[0]},${source[1]}
+                        Q ${midX},${midY * 0.5} ${target[0]},${target[1]}
+                        L ${target[0]},${target[1]}
+                        Q ${midX},${midY * 0.5} ${source[0]},${source[1]}
+                        Z
+                    `;
+
+                    const careerColor = careerColors[careerGroup.data.name];
+                    const flowOpacity = 0.3 + (flow.count / maxFlow) * 0.5;
+
+                    chordGroup.append("path")
+                        .attr("class", "chord path")
+                        .attr("d", ribbonPath)
+                        .style("fill", careerColor)
+                        .style("fill-opacity", flowOpacity * opacity)
+                        .on("mouseover", (e) => {
+                            chordGroup.selectAll(".chord path").classed("dimmed", true);
+                            d3.select(e.target).classed("dimmed", false);
+                            this.showTooltip(
+                                `${majorGroup.data.name} -> ${careerGroup.data.name}`,
+                                flow.count,
+                                e
+                            );
+                        })
+                        .on("mouseout", () => {
+                            chordGroup.selectAll(".chord path").classed("dimmed", false);
+                            this.hideTooltip();
+                        });
+                });
+            }
+
+            showTooltip(text, value, event) {
+                this.tooltip
+                    .classed("visible", true)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY + 10) + "px")
+                    .html(`
+                        <div class="tooltip-title">${text}</div>
+                        <div class="tooltip-stat">Graduates: <strong>${value}</strong></div>
+                    `);
+            }
+
+            hideTooltip() {
+                this.tooltip.classed("visible", false);
+            }
+        }
+
+        // Initialize
+        initTabs();
+        updateVisualization();
+    </script>
+</body>
+</html>
